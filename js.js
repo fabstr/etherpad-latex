@@ -1,3 +1,11 @@
+var ETHERPADHOST = "https://tallr.se/etherpad";
+var etherpadsettings = {
+	useMonospaceFont: true,
+	noColors: true,
+	showControls: false,
+	showChat: false
+};
+
 function viewPDF() {
 	$("#pdfview").attr("src", "");
 	var doc = $("#pad").val();
@@ -11,7 +19,15 @@ function viewPDF() {
 
 function viewEtherpad() {
 	var padname = $("#pad").val();
-	var src = "https://tallr.se/etherpad/p/"+padname+"?useMonospaceFont=true&noColors=true";
+
+	// get the url to the pad with the GET parameters
+	var src = ETHERPADHOST + "/p/" + padname + "?";
+	var getstring = "";
+	for (var key in etherpadsettings) {
+		getstring += key + "=" + etherpadsettings[key] + "&";
+	}
+	src += getstring;
+
 	$("#etherpad").attr("src", src);
 }
 
