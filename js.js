@@ -90,11 +90,59 @@ function openDocument()
 	}
 }
 
+function removeFile(name) {
+	if (confirm("Do you want to remove " + name + "?")) {
+		$.ajax({
+			url: "removefile.php?d="+$("#pad").val(),
+			type: "POST",
+			data: {file: name},
+			success: refreshFiletable(),
+			error: function() {
+				alert("Could not remove " + name + ".");
+			}
+		});
+
+	}
+}
+
+function renameFile(name) {
+	var newname = prompt("New filename for " + name + ":");
+	$.ajax({
+		url: "renamefile.php?d="+$("#pad").val(),
+		type: "POST",
+		data: {file: name, newname: newname},
+		success: refreshFiletable(),
+		error: function(result) {
+			alert("Could not rename " + name + ":" + JSON.stringify(result));
+		} });
+}
+
+function refreshFiletable() {
+	$("#filetable").html("<thead><th>Filename</th><th colspan=\"2\">Actions</th></thead>");
+	$.ajax({url: "listfiles.php?d="+$("#pad").val()}).done(function(data) {
+		var result = JSON.parse(data);
+		if (result.length == 0) {
+			$("#filetable").append("<tr><td colspan=\"3\">There are no files.</td></tr>");
+		}
+		result.forEach(function(e) {
+			var html = "";
+			html += "<tr>";
+			html += "<td>" + e.name + "</td>";
+			html += "<td><a href=\"#\" onclick=\"renameFile('"+e.name+"');\">Rename</a></td>";
+			html += "<td><a href=\"#\" onclick=\"removeFile('"+e.name+"');\">Remove</a></td>";
+			html += "</tr>";
+			$("#filetable").append(html);
+		});
+	});;
+}
+
 $(document).ready(function () {
 	// hide link, pdf and log
 	$("#link").hide();
 	$("#pdfview").hide();
 	$("#log").hide();
+	$("#filebox").hide();
+	$("#fileupload").hide();
 
 	$("#compilepdf").click(function() {
 		compile();
@@ -106,6 +154,47 @@ $(document).ready(function () {
 		var doc = $("#pad").val();
 		window.location.assign("edit.php?d="+doc);
 		return false;
+	});
+
+	$("#fileuploadbtn").click(function() {
+		var formdata = new FormData($("#fileform")[0]);
+		$.ajax({
+			url: "upload.php?d="+$("#pad").val(),
+			type: "POST",
+			data: formdata,
+			contentType: false,
+			processData: false,
+			xhr: function() {
+				var xhr = $.ajaxSettings.xhr();
+				if (xhr.upload) {
+					xhr.upload.addEventListener("progress", function(e){
+						if (e.lengthComputable) {
+							$("#fileupload").attr({value: e.loaded, max: e.total});
+						}
+					}, false);
+				}
+				return xhr;
+			},
+			success: function (result) {
+				refreshFiletable();
+			},
+			error: function(result) {
+				alert("Error: " + JSON.stringify(result));
+			},
+			beforeSend: function() {
+				$("#fileupload").show();
+			},
+			complete: function() {
+				$("#fileupload").hide();
+			}
+		});
+	});
+
+	$("#files").click(function() {
+		if (!$("#filebox").is(":visible")) {
+			refreshFiletable();
+		}
+		$("#filebox").toggle("slow");
 	});
 
 	openDocument();
