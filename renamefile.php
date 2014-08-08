@@ -18,11 +18,14 @@ $dir = WORKDIR . "/" . $_GET["d"] . "/";
 $file = $dir . escapeshellcmd($_POST["file"]);
 $newname = $dir . escapeshellcmd($_POST["newname"]);
 
-if (!rename($file, $newname)) {
+if ($file == "" || $newname = "") {
+	http_response_code(400);
+	echo "Empty filename";
+} else if (rename($file, $newname) == true) {
+	echo "Success";
+} else {
 	http_response_code(500);
 	echo "Could not rename " . $file . " to " . $newname;
-} else {
-	echo "Success";
 }
 
 ?>
