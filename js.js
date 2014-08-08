@@ -18,7 +18,10 @@ function viewEtherpad() {
 function handleCompileFailure(response) {
 	if (response.errno == 1) {
 		// the pad is missing, wait a second for it to be created
-		setTimeout(compile, 1000);
+		setTimeout(function() {
+			compile();
+			viewPDF();
+		}, 1000);
 	} else {
 		// write log message
 		var str = response.message;
