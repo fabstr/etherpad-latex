@@ -1,6 +1,7 @@
 <?php
 
 require_once("config.php");
+require_once("functions.php");
 
 if (!isset($_GET["d"])) {
 	http_response_code(400);
@@ -10,13 +11,19 @@ if (!isset($_GET["d"])) {
 	die("No file.");
 }
 
-$dir = WORKDIR . "/" . $_GET["d"] . "/";
+$doc = $_GET["d"];
+$file = escapeSlashes($_POST["file"]);
 
-$file = $dir . escapeshellcmd($_POST["file"]);
+if (!validateDocumentName($doc)) {
+	http_response_code(400);
+	die("Invalid document name");
+}
 
-if (!unlink($file)) {
+$path = WORKDIR . "/" . $doc . "/" . $file;
+
+if (!unlink($path)) {
 	http_response_code(500);
-	echo "Could not delete " . $file . ".";
+	echo "Could not delete " . $path . ".";
 } else {
 	echo "Success";
 }

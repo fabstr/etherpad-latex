@@ -13,10 +13,16 @@ if (!isset($_GET["d"])) {
 	die("No new name.");
 }
 
-$dir = WORKDIR . "/" . $_GET["d"] . "/";
+$doc = $_GET["d"];
+if (!validateDocumentName($doc)) {
+	http_response_code(400);
+	die("Invalid document name");
+}
 
-$file = $dir . escapeshellcmd($_POST["file"]);
-$newname = $dir . escapeshellcmd($_POST["newname"]);
+$dir = WORKDIR . "/" . $doc . "/";
+
+$file = $dir . escapeSlashes($_POST["file"]);
+$newname = $dir . escapeSlashes($_POST["newname"]);
 
 if ($file == "" || $newname = "") {
 	http_response_code(400);

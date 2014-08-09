@@ -10,6 +10,11 @@ if (!isset($_GET["d"])) {
 $doc = $_GET["d"];
 $dir = WORKDIR . "/" . $doc;
 
+if (!validateDocumentName($doc)) {
+	http_response_code(400);
+	die("Invalid document name");
+}
+
 $files = scandir($dir);
 
 $nolisting = array(".", "..", "$doc.aux", "$doc.fdb_latexmk", "$doc.fls", "$doc.log", "$doc.out", "$doc.pdf", "$doc.tex", "$doc.toc");
