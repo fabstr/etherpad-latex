@@ -146,7 +146,7 @@ function refreshFiletable() {
 			html += "<tr>";
 			html += "<td><a href=\"downloadfile.php?d="+doc+"&file="+e.name+"\">"+e.name+"</a></td>";
 			html += "<td><a href=\"#\" onclick=\"renameFile('"+e.name+"');\">Rename</a></td>";
-			html += "<td><a href=\"#\" onclick=\"removeFile('"+e.name+"');\">Remove</a></td>";
+			html += "<td><a href=\"#\" onclick=\"removeFile('"+e.name+"');\">Delete</a></td>";
 			html += "</tr>";
 			$("#filetable").append(html);
 		});
