@@ -15,7 +15,7 @@ permissions on this directory.
 etherpad-lite process. 
 - `ETHERPADLITEAPIKEY` is the api key defined in etherpad-lite's `settings.json`
 - `LATEXMKPATH` is the absolute path to the binary `latexmk`
-- `pdflatex` is the absolute path to the binary `pdflatex`
+- `PDFLATEXPATH` is the absolute path to the binary `pdflatex`
 
 #### Improving security
 To only allow the TeX distribution to see files in `$TEXMFOUTPUT` (or a 
