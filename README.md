@@ -42,6 +42,14 @@ etherpad-lite installation
 etherpad-lite (see [the etherpad-lite 
 wiki](https://github.com/ether/etherpad-lite/wiki/Embed-Parameters))
 
+## How does it work?
+`edit.php` consists of two iframe's: etherpad-lite to edit and ViewerJS to view
+the pdf. When the user presses compile, the php script `etherpad_latex.php` 
+downloads the contents of the etherpad document and saves it to a `.tex` file 
+in a directory unique to the document. `latemk` is used to compile and the 
+ViewerJS iframe is updated to show the updated pdf (which is served by 
+`pdf.php`).
+
 ## License 
 etherpad-latex is available under Affero GPL.
 
