@@ -14,7 +14,7 @@ function viewPDF() {
 	// for some reason this is neccessary
 	setTimeout(function() {
 		$("#pdfview").attr("src", src);
-	}, 1);
+	}, 100);
 }
 
 function viewEtherpad() {
@@ -135,7 +135,8 @@ function renameFile(name) {
 
 function refreshFiletable() {
 	$("#filetable").html("<thead><th>Filename</th><th colspan=\"2\">Actions</th></thead>");
-	$.ajax({url: "listfiles.php?d="+$("#pad").val()}).done(function(data) {
+	var doc = $("#pad").val();
+	$.ajax({url: "listfiles.php?d="+doc}).done(function(data) {
 		var result = JSON.parse(data);
 		if (result.length == 0) {
 			$("#filetable").append("<tr><td colspan=\"3\">There are no files.</td></tr>");
@@ -143,7 +144,7 @@ function refreshFiletable() {
 		result.forEach(function(e) {
 			var html = "";
 			html += "<tr>";
-			html += "<td>" + e.name + "</td>";
+			html += "<td><a href=\"downloadfile.php?d="+doc+"&file="+e.name+"\">"+e.name+"</a></td>";
 			html += "<td><a href=\"#\" onclick=\"renameFile('"+e.name+"');\">Rename</a></td>";
 			html += "<td><a href=\"#\" onclick=\"removeFile('"+e.name+"');\">Remove</a></td>";
 			html += "</tr>";
@@ -210,7 +211,7 @@ $(document).ready(function () {
 		if (!$("#filebox").is(":visible")) {
 			refreshFiletable();
 		}
-		$("#filebox").toggle("slow");
+		$("#filebox").dialog();
 	});
 
 	openDocument();
