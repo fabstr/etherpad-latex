@@ -1,11 +1,15 @@
 <?php
 
-// get the document name and make it shell safe
-$doc = $_GET["document"];
-$doc = escapeshellcmd($doc);
-
-// get configuration
 require_once("config.php");
+require_once("functions.php");
+
+// get the document name 
+$doc = $_GET["document"];
+if (!validateDocumentName($doc)) {
+	http_response_code(400);
+	$msg = json_encode(array("result" => "failure", "message" => "Invalid document name $doc", "errno" => 7));
+	die($msg);
+}
 
 // get the working directory
 $workdir = WORKDIR . "/" . $doc;
@@ -41,7 +45,6 @@ if ($data["code"] != 0) {
 
 // get the actual text
 $text = $data["data"]["text"];
-
 
 // write the pad to a file
 $file = $workdir . "/$doc.tex";
