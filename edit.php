@@ -10,9 +10,12 @@ if (isset($_GET["d"]) && $_GET["d"] != "") {
 	<head>
 	<title><?php echo $document ?> | Etherpad-Latex</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-		<script src="jquery.js"></script>
+		<script src="js/jquery.js"></script>
+		<script src="js/jquery-ui.min.js"></script>
 		<script src="js/js.js"></script>
-		<link rel="stylesheet" type="text/css" href="css.css">
+		<link rel="stylesheet" type="text/css" href="css/smoothness/jquery-ui.min.css">
+		<link rel="stylesheet" type="text/css" href="css/smoothness/theme.css">
+		<link rel="stylesheet" type="text/css" href="css/css.css">
 	</head>
 	<body>
 		<div id="box">
@@ -27,14 +30,15 @@ if (isset($_GET["d"]) && $_GET["d"] != "") {
 					<div id="status"></div>
 				</form>
 			</div>
-			<div id="filebox">
+			<div id="filebox" title="Manage files">
 				<form enctype="multipart/form-data" id="fileform">
 					<label for="file">Upload a file</label>
 					<input type="file" id="file" name="file">
 					<input type="button" id="fileuploadbtn" value="Upload">
+					<progress id="fileupload"></progress>
 				</form>
-				<progress id="fileupload"></progress>
 				<table id="filetable"></table>
+				<p>Click the name of a file to download.</p>
 			</div>
 
 			<div id="content">
