@@ -1,5 +1,6 @@
 <?php
 require_once("config.php");
+require_once("functions.php");
 
 if (!isset($_GET["d"])) {
 	http_response_code(400);
