@@ -68,7 +68,7 @@ function compile() {
 	$("#status").html("");
 	$("#status").append("Compiling latex, this may take a while... ");
 	$.ajax({
-		url: "etherpad_latex.php",
+		url: "api/etherpad_latex.php",
 		data: {
 			"document": $("#pad").val()
 		},
@@ -109,7 +109,7 @@ function openDocument()
 function removeFile(name) {
 	if (confirm("Do you want to remove " + name + "?")) {
 		$.ajax({
-			url: "removefile.php?d="+$("#pad").val(),
+			url: "api/removefile.php?d="+$("#pad").val(),
 			type: "POST",
 			data: {file: name},
 			success: refreshFiletable(),
@@ -124,7 +124,7 @@ function removeFile(name) {
 function renameFile(name) {
 	var newname = prompt("New filename for " + name + ":");
 	$.ajax({
-		url: "renamefile.php?d="+$("#pad").val(),
+		url: "api/renamefile.php?d="+$("#pad").val(),
 		type: "POST",
 		data: {file: name, newname: newname},
 		success: refreshFiletable(),
@@ -136,7 +136,7 @@ function renameFile(name) {
 function refreshFiletable() {
 	$("#filetable").html("<thead><th>Filename</th><th colspan=\"2\">Actions</th></thead>");
 	var doc = $("#pad").val();
-	$.ajax({url: "listfiles.php?d="+doc}).done(function(data) {
+	$.ajax({url: "api/listfiles.php?d="+doc}).done(function(data) {
 		var result = JSON.parse(data);
 		if (result.length == 0) {
 			$("#filetable").append("<tr><td colspan=\"3\">There are no files.</td></tr>");
@@ -144,7 +144,7 @@ function refreshFiletable() {
 		result.forEach(function(e) {
 			var html = "";
 			html += "<tr>";
-			html += "<td><a href=\"downloadfile.php?d="+doc+"&file="+e.name+"\">"+e.name+"</a></td>";
+			html += "<td><a href=\"api/downloadfile.php?d="+doc+"&file="+e.name+"\">"+e.name+"</a></td>";
 			html += "<td><a href=\"#\" onclick=\"renameFile('"+e.name+"');\">Rename</a></td>";
 			html += "<td><a href=\"#\" onclick=\"removeFile('"+e.name+"');\">Delete</a></td>";
 			html += "</tr>";
@@ -176,7 +176,7 @@ $(document).ready(function () {
 	$("#fileuploadbtn").click(function() {
 		var formdata = new FormData($("#fileform")[0]);
 		$.ajax({
-			url: "upload.php?d="+$("#pad").val(),
+			url: "api/upload.php?d="+$("#pad").val(),
 			type: "POST",
 			data: formdata,
 			contentType: false,
