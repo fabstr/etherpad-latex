@@ -1,13 +1,11 @@
 <?php
 if (isset($_GET["d"])) {
-	$str = "Location: edit.php?d=" . $_GET["d"];
-	header($str);
+	header("Location: edit.php?d=" . $_GET["d"]);
 }
 ?>
 <!DOCTYPE html>
 <html lang="sv">
 	<head>
-	<!-- <title><?php echo $document ?> | Etherpad-Latex</title> -->
 	<title>Etherpad-Latex</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 		<script src="jquery.js"></script>
