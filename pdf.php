@@ -1,6 +1,8 @@
 <?php
 
 require_once("config.php");
+require_once("functions.php");
+
 
 $filename = escapeshellcmd($_GET["p"]);
 $doc = explode(".pdf", $filename)[0];
@@ -13,7 +15,6 @@ if (!validateDocumentName($doc)) {
 
 // check the file exists
 if (!file_exists($path)) {
-	header("Content-type: text/plain");
 	die("$path does not exist.");
 }
 
