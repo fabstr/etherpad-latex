@@ -38,7 +38,7 @@ if (isset($_GET["d"]) && $_GET["d"] != "") {
 					<progress id="fileupload"></progress>
 				</form>
 				<table id="filetable"></table>
-				<p>Click the name of a file to download.</p>
+				<p>To download a file, click its name.</p>
 			</div>
 
 			<div id="content">
