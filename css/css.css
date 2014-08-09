@@ -41,3 +41,7 @@ div#log {
 	overflow-y: scroll;
 	padding-left: 5px;
 }
+
+div#filebox {
+	font-size: 14px;
+}
