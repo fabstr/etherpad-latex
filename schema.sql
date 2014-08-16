@@ -5,17 +5,17 @@
 -- DROP TABLE groups;
 -- DROP TABLE users;
 
-CREATE TABLE users (
-	userid SERIAL PRIMARY KEY,
-	username TEXT UNIQUE,
-	password VARCHAR(64) NOT NULL,
-	salt VARCHAR(64) NOT NULL,
-	iterations INTEGER NOT NULL,
-	algorithm TEXT NOT NULL
+CREATE TABLE users ( 
+	userid INTEGER AUTO_INCREMENT PRIMARY KEY, 
+	username VARCHAR(255) UNIQUE, 
+	password VARCHAR(64) NOT NULL, 
+	salt VARCHAR(64) NOT NULL, 
+	iterations INTEGER NOT NULL, 
+	algorithm TEXT NOT NULL 
 );
 
 CREATE TABLE groups (
-	groupid SERIAL PRIMARY KEY,
+	groupid INTEGER AUTO_INCREMENT PRIMARY KEY,
 	groupname TEXT NOT NULL
 );
 
