@@ -2,8 +2,9 @@
 A set of php and javascript files to combine etherpad-lite with LaTeX.
 
 ## Setup
-Install [etherpad-lite](http://etherpad.org/) and set an api key. Install a TeX
-distribution on the server (e.g [TexLive](https://www.tug.org/texlive/)).
+Install [etherpad-lite](http://etherpad.org/) and get the api key from 
+APIKEY.txt. Install a TeX distribution on the server (e.g 
+[TexLive](https://www.tug.org/texlive/)).
 
 ### Server-side configuration
 All parameters in `api/config.php` should be set:
@@ -13,7 +14,7 @@ place. The user account that runs the php process should have read/write
 permissions on this directory.
 - `ETHERPADLITEHOST` is the web address where the web server can reach the 
 etherpad-lite process. 
-- `ETHERPADLITEAPIKEY` is the api key defined in etherpad-lite's `settings.json`
+- `ETHERPADLITEAPIKEY` is the api key defined in etherpad-lite's `APIKEY.txt`
 - `LATEXMKPATH` is the absolute path to the binary `latexmk`
 - `PDFLATEXPATH` is the absolute path to the binary `pdflatex`
 
@@ -34,13 +35,15 @@ server.
 
 
 ### Client-side configuration
-`ETHERPADHOST` and `etherpadsettings` in `js/js.js` should be set:
+`ETHERPADHOST` and `ETHERPADSETTINGS` in `js/settings.js` should be set:
 
 - `ETHERPADLITEHOST` is the web address where the client can reach the 
 etherpad-lite installation
-- `etherpadsettings` is a json object that sets the embed parameters for 
+- `ETHERPADSETTINGS` is a json object that sets the embed parameters for 
 etherpad-lite (see [the etherpad-lite 
 wiki](https://github.com/ether/etherpad-lite/wiki/Embed-Parameters))
+- `HOSTURL` is the url to where etherpad-latex is installed. (ie 
+https://example.com/etherpadlatex").
 
 ## How does it work?
 `edit.php` consists of two iframe's: etherpad-lite to edit and ViewerJS to view
@@ -51,8 +54,8 @@ ViewerJS iframe is updated to show the updated pdf (which is served by
 `pdf.php`).
 
 ## License 
-etherpad-latex is available under Affero GPL.
+etherpad-latex is available under GPLv3.
 
 ### Libraries used
 - jQuery and jQuery UI are relased under MIT.
-- ViewerJS is relased under Affero GPL.
+- PDF.js is released under Apache
