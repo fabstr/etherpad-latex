@@ -149,9 +149,9 @@ angular.module('myApp.controllers', [])
 	// refresh the file list in manageFiles dialog box by getting a list of
 	// files from "back/listfiles.php?d=padname"
 	function refreshFiletable() {
-		$http.get("back/listfiles.php?d="+name).success(function(result) {
+		$http.post("back/listfiles.php", {"name": name, "groupid": group}).success(function(result) {
 			// set the files list
-			$scope.files = result.files;
+			$scope.files = result.message;
 		}).error(function(result) {
 		});
 	}
@@ -165,6 +165,7 @@ angular.module('myApp.controllers', [])
 	$("#managefilesLink").click(function() {
 		refreshFiletable();
 		$("#filebox").dialog();
+		$("#fileupload").hide();
 	});
 
 	// create a hidden iframe with getPdfUrl() as src, download the
@@ -178,6 +179,37 @@ angular.module('myApp.controllers', [])
 	$("#viewLink").click(function() {
 		var url = getPdfUrl(name, false);
 	});
+
+	// to download a file
+	$scope.download = function(file) {
+		$http.post("back/downloadfile.php", {
+			"documentname": name, "file": file, "groupid": group
+		}).success(function(result) {
+		}).error(function(result) {
+		});
+	};
+
+	// to rename a file
+	$scope.rename = function(file) {
+		var newname = prompt("New name of '"+file+"'");
+		$http.post("back/renamefile.php", {
+			"documentname": name, "file": file,
+			"newfilename": newname, "groupid": group
+		}).success(function(result) {
+		}).error(function(result) {
+		});
+	};
+
+	// to delete a file
+	$scope.delete = function(file) {
+		if (confirm("Are you sure you want to delete '"+file+"'?")) {
+			$http.post("back/deletefile.php", {
+				"documentname": name, "file": file, "groupid": group
+			}).success(function(result) {
+			}).error(function(result) {
+			});
+		}
+	};
 
 	// hide the log by default
 	$scope.log = {"show": false};
