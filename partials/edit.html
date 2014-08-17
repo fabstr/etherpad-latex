@@ -1,0 +1,30 @@
+<div id="filebox" title="Manage files">
+	<form enctype="multipart/form-data" id="fileform">
+		<label for="file">Upload a file</label>
+		<input type="file" id="file" name="file">
+		<input type="button" id="fileuploadbtn" value="Upload">
+		<progress id="fileupload"></progress>
+	</form>
+	<table id="filetable" class="table table-striped">
+		<thead>
+			<th>Filename</th>
+			<th>Actions</th>
+		</thead>
+		<tr ng-repeat="f in files">
+			<td><a href="back/downloadfile.php?d={{name}}&file={{f.name}}">{{f.name}}</a></td>
+			<td>
+				<a href="" title="Download {{f.name}}"><span class="glyphicon glyphicon-download"></span></a>
+				<a href="" title="Rename {{f.name}}"><span class="glyphicon glyphicon-share-alt"></span></a>
+				<a href="" title="Delete {{f.namae}}"><span class="glyphicon glyphicon-trash"></span></a>
+			</td>
+		</tr>
+
+	</table>
+</div>
+
+<div id="content">
+	<iframe style="padding: 0px;" id="etherpad" ng-src="{{url.ether}}" class="col-md-7 fill-height" seamless="seamless" frameBorder="0"></iframe>
+	<iframe style="padding: 0px;" id="pdfview" ng-src="{{url.pdfview}}" ng-show="!log.show" class="col-md-5 fill-height" seamless="seamless" frameBorder="0"></iframe>
+	<div id="log" ng-show="log.show" class="col-md-5 fill-height"><pre>{{log.msg}}</pre></div>
+</div>
+
