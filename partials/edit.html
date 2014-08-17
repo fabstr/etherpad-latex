@@ -11,11 +11,11 @@
 			<th>Actions</th>
 		</thead>
 		<tr ng-repeat="f in files">
-			<td><a href="back/downloadfile.php?d={{name}}&file={{f.name}}">{{f.name}}</a></td>
+			<td><a href="back/downloadfile.php?d={{name}}&file={{f}}">{{f}}</a></td>
 			<td>
-				<a href="" title="Download {{f.name}}"><span class="glyphicon glyphicon-download"></span></a>
-				<a href="" title="Rename {{f.name}}"><span class="glyphicon glyphicon-share-alt"></span></a>
-				<a href="" title="Delete {{f.namae}}"><span class="glyphicon glyphicon-trash"></span></a>
+				<a href="" ng-click="download(f)" title="Download {{f}}"><span class="glyphicon glyphicon-download"></span></a>
+				<a href="" ng-click="rename(f)" title="Rename {{f}}"><span class="glyphicon glyphicon-share-alt"></span></a>
+				<a href="" ng-click="delete(f)" title="Delete {{f}}"><span class="glyphicon glyphicon-trash"></span></a>
 			</td>
 		</tr>
 
@@ -27,4 +27,3 @@
 	<iframe style="padding: 0px;" id="pdfview" ng-src="{{url.pdfview}}" ng-show="!log.show" class="col-md-5 fill-height" seamless="seamless" frameBorder="0"></iframe>
 	<div id="log" ng-show="log.show" class="col-md-5 fill-height"><pre>{{log.msg}}</pre></div>
 </div>
-
