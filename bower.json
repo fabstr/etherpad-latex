@@ -1,0 +1,25 @@
+{
+  "name": "etherpadlatex",
+  "version": "0.1.0",
+  "homepage": "https://github.com/fabstr/etherpad-latex",
+  "authors": [
+    "Fabian Ström <fs@fabianstrom.se>"
+  ],
+  "license": "AGPL",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "normalize.css": "~3.0.1",
+    "angular": "~1.2.21",
+    "angular-route": "~1.2.21",
+    "jquery-ui": "~1.11.0",
+    "bootstrap": "~3.2.0"
+  }
+}
