@@ -1,3 +1,5 @@
 compiles
 .*.swp
 js/jquery-ui-1.11.0
+.DS_Store 
+._.DS_Store
