@@ -239,12 +239,13 @@ angular.module('myApp.controllers', [])
 	// to delete a file
 	$scope.delete = function(file) {
 		if (confirm("Are you sure you want to delete '"+file+"'?")) {
-			$http.post("rest/isloggedin", {
-				"documentname": name, 
-				"file": file, 
-				"groupid": group
-			}).success(function(result) {
+			$http({
+				method: 'DELETE',
+				url: 'rest/files/'+file+'?documentid='+name
+			}).success(function() {
+				refreshFiletable();
 			}).error(function(result) {
+				alert('Could not delete file: ' + JSON.stringify(result));
 			});
 		}
 	};

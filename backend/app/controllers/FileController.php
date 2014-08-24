@@ -46,9 +46,14 @@ class FileController  extends \BaseController {
 		Input::file('file') -> move($doc -> absdir(), $filename);
 	}
 
-	public function destroy($fileid) 
+	public function destroy($filename) 
 	{
+		// get the document and the path to the file
+		$doc = Document::find(Input::get('documentid'));
+		$path = $doc -> absdir() . '/' . $filename;
 
+		// delete the file
+		unlink($path);
 	}
 
 	public function rename()
@@ -73,7 +78,7 @@ class FileController  extends \BaseController {
 		// write headers
 		header('Content-type: ' . $mime);
 		header('Content-length: ' . $size);
-		header('Content-dispositiono: filename="'.$filename.'"');
+		header('Content-disposition: filename="'.$filename.'"');
 
 		// write file
 		readfile($path);
