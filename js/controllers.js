@@ -98,6 +98,8 @@ angular.module('myApp.controllers', [])
 	// get route parameters
 	var name = $routeParams.name;
 	var group = $routeParams.group;
+	$scope.name = name;
+	$scope.group = group;
 
 	// return an url
 	// "http://host.example.com/p/padname?settings..."
@@ -148,12 +150,51 @@ angular.module('myApp.controllers', [])
 	// refresh the file list in manageFiles dialog box by getting a list of
 	// files from "rest/isloggedin"
 	function refreshFiletable() {
-		$http.post("rest/isloggedin", {"name": name, "groupid": group}).success(function(result) {
+		$http.get("rest/files/"+name).success(function(result) {
 			// set the files list
-			$scope.files = result.message;
+			$scope.files = result;
 		}).error(function(result) {
 		});
 	}
+
+	// to upload a file
+	$("#fileuploadbtn").click(function() {
+		var formdata = new FormData($("#fileform")[0]);
+		$.ajax({
+			url: 'rest/files/'+name,
+			type: 'POST',
+			data: formdata,
+			contentType: false,
+			processData: false,
+			xhr: function() {
+				var xhr = $.ajaxSettings.xhr();
+				if (xhr.upload) {
+					xhr.upload.addEventListener('progress', function(e) {
+						if (e.lengthComputable) {
+							$("#fileupload").attr({
+								value: e.loaded,
+								max: e.total
+							});
+						}
+					}, false);
+				}
+				return xhr;
+			},
+			success: function(result) {
+				refreshFiletable();
+			},
+			error: function(result) {
+				alert('Error uploading file: ' + JSON.stringify(result));
+			},
+			beforeSend: function() {
+				$("#fileupload").show();
+			},
+			complete: function() {
+				$("#fileupload").hide();
+			}
+
+		});
+	});
 
 	// compile the document
 	$("#compileLink").click(function() {
@@ -187,6 +228,10 @@ angular.module('myApp.controllers', [])
 		}).success(function(result) {
 		}).error(function(result) {
 		});
+	};
+
+	// to upload a file
+	$scope.upload = function() {
 	};
 
 	// to rename a file

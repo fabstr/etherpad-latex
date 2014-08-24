@@ -30,6 +30,11 @@ class Document extends Eloquent {
 		return $this -> id . "_" . $this -> ethergroup();
 	}
 
+	public function absdir()
+	{
+		return $_ENV['WORKDIR'] . '/' . $this -> subdir();
+	}
+
 	public function filepath($extension) 
 	{
 		return sprintf('%s/%s/%s.%s', 
@@ -37,5 +42,11 @@ class Document extends Eloquent {
 			$this -> subdir(),
 			$this -> id, 
 			$extension);
+	}
+
+	public function listFiles()
+	{
+		$files = scandir($this -> absdir());
+		return $files;
 	}
 }

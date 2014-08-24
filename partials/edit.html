@@ -11,7 +11,7 @@
 			<th>Actions</th>
 		</thead>
 		<tr ng-repeat="f in files">
-			<td><a href="back/downloadfile.php?d={{name}}&file={{f}}">{{f}}</a></td>
+			<td><a href="rest/files/{{name}}/{{f}}">{{f}}</a></td>
 			<td>
 				<a href="" ng-click="download(f)" title="Download {{f}}"><span class="glyphicon glyphicon-download"></span></a>
 				<a href="" ng-click="rename(f)" title="Rename {{f}}"><span class="glyphicon glyphicon-share-alt"></span></a>

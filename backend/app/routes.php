@@ -25,6 +25,8 @@ Route::group(array('prefix' => 'latex/rest'), function()
 	// a user can be created without loggin in
 	Route::post('create', 'UserController@store');
 
+
+
 	// other function requre login
 	Route::group(array('before' => 'auth'), function() 
 	{
@@ -32,12 +34,13 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// cookie
 		Route::post('user/createsessions', 'UserController@createsessions');
 
-
 		// view a pdf
 		Route::get('pdf/{id}.pdf', 'PdfController@view');
 
 		// download a pdf
 		Route::get('pdf/download/{id}.pdf', 'PdfController@download');
+
+
 
 		// to compile the document
 		Route::post('documents/compile', 'DocumentController@compile');
@@ -47,5 +50,22 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 		// create a document
 		Route::post('documents', 'DocumentController@store');
+
+
+
+		// list files of a document
+		Route::get('files/{documentid}', 'FileController@index');
+
+		// download a single file
+		Route::get('files/{documentid}/{filename}', 'FileController@download');
+
+		// store a file
+		Route::post('files/{documentid}', 'FileController@store');
+
+		// delete a file
+		Route::delete('files/{documentid}/{fileid}', 'FileController@destroy');
+
+		// rename a file
+		Route::post('files/{documentid}/rename', 'FileController@rename');
 	});
 });
