@@ -67,7 +67,7 @@ Route::group(array('prefix' => 'latex/rest'), function()
 			Route::get('files/{filename}', 'FileController@download');
 
 			// delete a file
-			Route::delete('files/{fileid}', 'FileController@destroy');
+			Route::delete('files/{filename}', 'FileController@destroy');
 
 			// rename a file
 			Route::post('files/rename', 'FileController@rename');
