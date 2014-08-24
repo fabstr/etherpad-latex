@@ -1,53 +1,52 @@
--- -- rensa databas
--- DROP TABLE padgroups;
--- DROP TABLE pads;
--- DROP TABLE ingroup;
--- DROP TABLE groups;
--- DROP TABLE users;
+CREATE TABLE users (
+	id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	username VARCHAR(255) UNIQUE,
+	password VARCHAR(255) NOT NULL,
 
-CREATE TABLE users ( 
-	userid INTEGER AUTO_INCREMENT PRIMARY KEY, 
-	username VARCHAR(255) UNIQUE, 
-	password VARCHAR(64) NOT NULL, 
-	salt VARCHAR(64) NOT NULL, 
-	iterations INTEGER NOT NULL, 
-	algorithm TEXT NOT NULL 
+	-- to store the remember token of laravel
+	remember_token VARCHAR(100),
+
+	-- to store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
 );
 
 CREATE TABLE groups (
-	groupid INTEGER AUTO_INCREMENT PRIMARY KEY,
-	groupname TEXT NOT NULL
+	id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	groupname VARCHAR(255) UNIQUE,
+
+	-- etherpad's corresponding group
+	ethergroupname TEXT,
+
+	-- the owner of the group
+	user_id INTEGER
+	REFERENCES users (id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
 );
 
-CREATE TABLE ingroup (
-	groupid INTEGER 
-		REFERENCES groups (groupid) 
-		ON UPDATE CASCADE 
-		ON DELETE CASCADE,
-	userid INTEGER 
-		REFERENCES users (userid) 
-		ON UPDATE CASCADE 
-		ON DELETE CASCADE,
-	PRIMARY KEY (groupid, userid)
+CREATE TABLE group_user (
+	group_id INTEGER
+	REFERENCES groups (id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	user_id INTEGER
+	REFERENCES users (id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+	PRIMARY KEY (group_id, user_id)
 );
 
-CREATE TABLE pads (
-	padid INTEGER PRIMARY KEY,
-	padname TEXT NOT NULL,
-	ownerownerid INTEGER 
-		REFERENCES groups (groupid)
-		ON UPDATE CASCADE 
-		ON DELETE CASCADE
-);
+CREATE TABLE documents (
+	id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	documentname TEXT NOT NULL,
 
-CREATE TABLE padgroups (
-	padid INTEGER 
-		REFERENCES pads (padid) 
-		ON UPDATE CASCADE 
-		ON DELETE CASCADE,
-	groupid INTEGER 
-		REFERENCES groups (groupid) 
-		ON UPDATE CASCADE ON DELETE CASCADE,
-	PRIMARY KEY (padid, groupid)
-);
+	-- etherpad's corresponding document
+	etherdocumentname TEXT,
 
+	-- the owner of the document
+	group_id INTEGER  
+	REFERENCES groups (id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE
+);

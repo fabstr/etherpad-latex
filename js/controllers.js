@@ -117,8 +117,7 @@ angular.module('myApp.controllers', [])
 	function getPdfUrl(name, download) {
 		if (typeof(download) === "undefined") download = false;
 
-		var url = HOSTURL + "/pdf/";
-		url += group + "/";
+		var url = HOSTURL + "/rest/pdf/";
 		if (download == true) {
 			url += "download/";
 		}
@@ -134,7 +133,7 @@ angular.module('myApp.controllers', [])
 	// compile the current document by calling compile.php with the name
 	// and group id as post paramers
 	function compile() {
-		$http.post("rest/isloggedin", {"name": name, "group": group}).success(function(result) {
+		$http.post("rest/documents/compile", {"name": name, "group": group}).success(function(result) {
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			//$scope.log.show = false;
@@ -178,6 +177,7 @@ angular.module('myApp.controllers', [])
 	// document
 	$("#viewLink").click(function() {
 		var url = getPdfUrl(name, false);
+		alert(url);
 	});
 
 	// to download a file

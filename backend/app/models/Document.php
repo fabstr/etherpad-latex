@@ -15,4 +15,27 @@ class Document extends Eloquent {
 	{
 		return $this -> belongsTo('Group');
 	}
+
+	public function ethergroup()
+	{
+		$group = DB::table('documents') 
+			-> leftJoin('groups', 'documents.group_id', '=', 'groups.id')
+			-> where('groups.id', '=', $this -> id)
+			-> pluck('groups.ethergroupname');
+		return $group;
+	}
+
+	public function subdir()
+	{
+		return $this -> id . "_" . $this -> ethergroup();
+	}
+
+	public function filepath($extension) 
+	{
+		return sprintf('%s/%s/%s.%s', 
+			$_ENV['WORKDIR'],
+			$this -> subdir(),
+			$this -> id, 
+			$extension);
+	}
 }

@@ -46,7 +46,20 @@ class User extends Eloquent implements UserInterface {
 			-> leftJoin('groups', 'group_user.group_id', '=', 'groups.id')
 			-> rightJoin('documents', 'documents.group_id', '=', 'groups.id')
 			-> select('documentname as name', 'documents.id as id', 'groups.ethergroupname as ethergroupname')
+			-> where('users.id', '=', $this -> id)
 			-> get();
+	}
+
+	public function hasAccessToDocument($documentid)
+	{
+		$documents = $this -> documents();
+		foreach ($documents as $doc) {
+			if ($doc -> id == $documentid) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public static function boot()

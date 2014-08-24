@@ -18,8 +18,8 @@
 
 	<h2>Your documents</h2>
 	<p class="bg-warning" ng-show="documentsfail">
-	Could not get documents: <br>
-	<span style="font-family: Courier;">{{documentsmessage}}</span>
+		Could not get documents: <br>
+		<span style="font-family: Courier;">{{documentsmessage}}</span>
 	</p>
 	<p class="bg-info" ng-show="nodocuments">There are no documents.</p>
 	<table class="table table-striped" ng-show="!documentsfail && !nodocuments">
@@ -27,12 +27,12 @@
 			<th>Name</th>
 			<th class="right">Actions</th>
 		</thead>
-		<tr ng-repeat="d in documents.documentList">
-			<td><a href="#/edit/{{d.groupid}}/{{d.name}}">{{d.name}}</a></td>
+		<tr ng-repeat="d in documents">
+			<td><a href="#/edit/{{d.ethergroupname}}/{{d.id}}">{{d.name}}</a></td>
 			<td class="right">
-				<a href="#/edit/{{d.groupid}}/{{d.name}}" title="Edit {{d.name}}"><span class="glyphicon glyphicon-pencil"></span></a>
-				<a href="#/managegroups/{{d.groupid}}/{{d.name}}" title="Manage groups for {{d.name}}"><span class="glyphicon glyphicon-user"></span></a>
-				<a href="#/delete/{{d.groupid}}/{{d.name}}" title="Delete {{d.name}}"><span class="glyphicon glyphicon-trash"></span></a>
+				<a href="#/edit/{{d.ethergroupname}}/{{d.id}}" title="Edit {{d.name}}"><span class="glyphicon glyphicon-pencil"></span></a>
+				<a href="#/managegroups/{{d.ethergroupname}}/{{d.id}}" title="Manage groups for {{d.name}}"><span class="glyphicon glyphicon-user"></span></a>
+				<a href="#/delete/{{d.ethergroupname}}/{{d.id}}" title="Delete {{d.name}}"><span class="glyphicon glyphicon-trash"></span></a>
 			</td>
 		</tr>
 	</table>

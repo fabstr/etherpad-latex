@@ -35,6 +35,9 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// to compile the document
 		Route::post('documents/compile', 'DocumentController@compile');
 
+		Route::get('pdf/{id}.pdf', 'PdfController@view');
+		Route::get('pdf/download/{id}.pdf', 'PdfController@download');
+
 		Route::resource('user', 'UserController');
 		Route::resource('groups', 'GroupController');
 		Route::resource('documents', 'DocumentController');
