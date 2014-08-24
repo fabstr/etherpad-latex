@@ -208,22 +208,12 @@ angular.module('myApp.controllers', [])
 		$("#fileupload").hide();
 	});
 
-	// create a hidden iframe with getPdfUrl() as src, download the
-	// document
-	$("#downloadLink").click(function() {
-		var url = getPdfUrl(name, true);
-	});
+	// set a link to download the pdf
+	$("#downloadLink").attr('href', getPdfUrl(name, true));
 
-	// create a hidden iframe with getPdfUrl() as src, view the
-	// document
-	$("#viewLink").click(function() {
-		var url = getPdfUrl(name, false);
-		alert(url);
-	});
+	// set ta link to view the pdf 
+	$("#viewLink").attr('href', getPdfUrl(name, false));
 
-	// to upload a file
-	$scope.upload = function() {
-	};
 
 	// to rename a file
 	$scope.rename = function(file) {
