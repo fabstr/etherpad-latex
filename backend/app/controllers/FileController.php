@@ -58,7 +58,26 @@ class FileController  extends \BaseController {
 
 	public function rename()
 	{
+		// get the name of the old/new file
+		$input = Input::json();
+		$oldfile = $input -> get('file');
+		$newfile = $input -> get('newfile');
 
+		// check the file name is the same
+		if (pathinfo($oldfile, PATHINFO_EXTENSION) != pathinfo($newfile, PATHINFO_EXTENSION)) {
+			return Response::json(array(
+				'failure' => 'Could not rename file, invalid new extension.'
+			), 400);
+		}
+
+		// get the document and the directory
+		$doc = Document::find(Input::get('documentid'));
+		$dir = $doc -> absdir();
+
+		// rename the file
+		$oldfile = $dir . '/' . $oldfile;
+		$newfile = $dir . '/' . $newfile;
+		rename($oldfile, $newfile);
 	}
 
 	public function download($filename)

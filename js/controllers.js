@@ -227,12 +227,14 @@ angular.module('myApp.controllers', [])
 
 	// to rename a file
 	$scope.rename = function(file) {
-		var newname = prompt("New name of '"+file+"'");
-		$http.post("rest/isloggedin", {
-			"documentname": name, "file": file,
-			"newfilename": newname, "groupid": group
+		var newname = prompt("New name of '"+file+"':");
+		$http.post("rest/files/rename?documentid="+name, {
+			"file": file,
+			"newfile": newname, 
 		}).success(function(result) {
+			refreshFiletable();
 		}).error(function(result) {
+			alert('Could not rename file: ' . JSON.stringify(result));
 		});
 	};
 
