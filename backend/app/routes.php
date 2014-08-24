@@ -32,14 +32,20 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// cookie
 		Route::post('user/createsessions', 'UserController@createsessions');
 
+
+		// view a pdf
+		Route::get('pdf/{id}.pdf', 'PdfController@view');
+
+		// download a pdf
+		Route::get('pdf/download/{id}.pdf', 'PdfController@download');
+
 		// to compile the document
 		Route::post('documents/compile', 'DocumentController@compile');
 
-		Route::get('pdf/{id}.pdf', 'PdfController@view');
-		Route::get('pdf/download/{id}.pdf', 'PdfController@download');
+		// list the documents
+		Route::get('documents', 'DocumentController@index');
 
-		Route::resource('user', 'UserController');
-		Route::resource('groups', 'GroupController');
-		Route::resource('documents', 'DocumentController');
+		// create a document
+		Route::post('documents', 'DocumentController@store');
 	});
 });
