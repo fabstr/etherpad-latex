@@ -20,7 +20,7 @@ class Document extends Eloquent {
 	{
 		$group = DB::table('documents') 
 			-> leftJoin('groups', 'documents.group_id', '=', 'groups.id')
-			-> where('groups.id', '=', $this -> id)
+			-> where('documents.id', '=', $this -> id)
 			-> pluck('groups.ethergroupname');
 		return $group;
 	}

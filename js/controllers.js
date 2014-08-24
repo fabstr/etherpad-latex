@@ -138,12 +138,12 @@ angular.module('myApp.controllers', [])
 		$http.post("rest/documents/compile", {"name": name, "group": group}).success(function(result) {
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
-			//$scope.log.show = false;
+			$scope.log.show = false;
 		}).error(function(result) {
 			// there is an error, show the log-div and set the 
 			// message
 			$scope.log.show = true;
-			$scope.log.msg = result;
+			$scope.log.msg = result.message.replace(/\\n/g, '\n');
 		});
 	};
 

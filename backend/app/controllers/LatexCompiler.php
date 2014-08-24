@@ -23,7 +23,7 @@ class LatexCompiler {
 		// the parameters are correct, set the variables
 		$this -> padid = $document -> ethergroup() . '$' . $padid;
 		$this -> name = $document -> id;
-		$this -> directory = $_ENV['WORKDIR'] . '/' . $document -> subdir();
+		$this -> directory = $document -> absdir();
 		$this -> pm = new PadManager();
 	}
 
