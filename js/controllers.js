@@ -4,13 +4,13 @@
 
 angular.module('myApp.controllers', [])
 .controller('LoginController', ['$scope', '$http', '$location', function($scope, $http, $location ) {
-	$http.get("back/isloggedin.php").success(function() {
+	$http.get("rest/isloggedin").success(function() {
 		$location.path("/main");
 	});
 
 	$scope.login = function() {
 		console.log("Loggin in");
-		$http.post('back/login.php', $scope.user).success(function(result) {
+		$http.post('rest/login', $scope.user).success(function(result) {
 			$location.path("/main");
 		}).error(function(result) {
 			$scope.loginfail = true;
@@ -20,7 +20,7 @@ angular.module('myApp.controllers', [])
 	$scope.createuser = function() {
 		console.log("Creating user");
 		if ($scope.validate()) {
-			$http.post('back/createuser.php', $scope.newuser).success(function(result) {
+			$http.post('rest/create', $scope.newuser).success(function(result) {
 				$location.path("/main");
 			}).error(function(result) {
 			});
@@ -38,31 +38,31 @@ angular.module('myApp.controllers', [])
 	};
 }])
 .controller('LogoutController', ['$scope', '$http', function($scope, $http) {
-	$http.get("back/logout.php").success(function() {
+	$http.get("rest/logout").success(function() {
 		$scope.loggedout = true;
 	});
 }])
 
 .controller('MainController', ['$scope', '$http', '$location', function($scope, $http, $location){
-	$http.get("back/isloggedin.php").error(function() {
+	$http.get("rest/isloggedin").error(function() {
 		$location.path("/login");
 	});
 
 	function listDocuments() {
-		$http.get("back/listdocuments.php").success(function(response) {
-			if (response.message.documentList.length == 0) {
+		$http.get("rest/documents").success(function(response) {
+			if (response.length == 0) {
 				$scope.nodocuments = true;
 			} else {
 				$scope.nodocuments = false;
 			}
-			$scope.documents = response.message;
+			$scope.documents = response;
 			$scope.documentsfail = false;
 		}).error(function(result) {
 			if (result.code == 403) {
 				$location.path("/login");
 			} else {
 				$scope.documentsfail = true;
-				$scope.documentsmessage = result.message;
+				$scope.documentsmessage = "Could not list documents.";
 			}
 		});
 
@@ -70,8 +70,8 @@ angular.module('myApp.controllers', [])
 
 	$scope.createdocument = function(edit) {
 		if (typeof(edit) === "undefined") edit = false;
-		var url = "back/createdocument.php?name="+$scope.document.name;
-		$http.get(url).success(function() {
+		var data = {'documentname': $scope.document.name};
+		$http.post('rest/documents', data).success(function() {
 			if (edit == true) {
 				$location.path("#edit/"+$scope.document.name);
 			} else {
@@ -91,13 +91,13 @@ angular.module('myApp.controllers', [])
 
 .controller('EditController', ['$scope', '$routeParams', '$http', '$location', function($scope, $routeParams, $http, $location) {
 	// if the user is not logged in, redirect to login page
-	$http.get("back/isloggedin.php").error(function() {
+	$http.get("rest/isloggedin").error(function() {
 		$location.path("/login");
 	});
 
 	// get route parameters
-	var group = $routeParams.group;
 	var name = $routeParams.name;
+	var group = $routeParams.group;
 
 	// return an url
 	// "http://host.example.com/p/padname?settings..."
@@ -134,7 +134,7 @@ angular.module('myApp.controllers', [])
 	// compile the current document by calling compile.php with the name
 	// and group id as post paramers
 	function compile() {
-		$http.post("back/compile.php", {"name": name, "group": group}).success(function(result) {
+		$http.post("rest/isloggedin", {"name": name, "group": group}).success(function(result) {
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			//$scope.log.show = false;
@@ -147,9 +147,9 @@ angular.module('myApp.controllers', [])
 	};
 
 	// refresh the file list in manageFiles dialog box by getting a list of
-	// files from "back/listfiles.php?d=padname"
+	// files from "rest/isloggedin"
 	function refreshFiletable() {
-		$http.post("back/listfiles.php", {"name": name, "groupid": group}).success(function(result) {
+		$http.post("rest/isloggedin", {"name": name, "groupid": group}).success(function(result) {
 			// set the files list
 			$scope.files = result.message;
 		}).error(function(result) {
@@ -182,7 +182,7 @@ angular.module('myApp.controllers', [])
 
 	// to download a file
 	$scope.download = function(file) {
-		$http.post("back/downloadfile.php", {
+		$http.post("rest/isloggedin", {
 			"documentname": name, "file": file, "groupid": group
 		}).success(function(result) {
 		}).error(function(result) {
@@ -192,7 +192,7 @@ angular.module('myApp.controllers', [])
 	// to rename a file
 	$scope.rename = function(file) {
 		var newname = prompt("New name of '"+file+"'");
-		$http.post("back/renamefile.php", {
+		$http.post("rest/isloggedin", {
 			"documentname": name, "file": file,
 			"newfilename": newname, "groupid": group
 		}).success(function(result) {
@@ -203,8 +203,10 @@ angular.module('myApp.controllers', [])
 	// to delete a file
 	$scope.delete = function(file) {
 		if (confirm("Are you sure you want to delete '"+file+"'?")) {
-			$http.post("back/deletefile.php", {
-				"documentname": name, "file": file, "groupid": group
+			$http.post("rest/isloggedin", {
+				"documentname": name, 
+				"file": file, 
+				"groupid": group
 			}).success(function(result) {
 			}).error(function(result) {
 			});
@@ -214,11 +216,21 @@ angular.module('myApp.controllers', [])
 	// hide the log by default
 	$scope.log = {"show": false};
 
-	// set urls for the iframes
+	// get the urls for the iframes
 	var etherurl = getPadUrl(name);
 	var pdfurl = getPdfUrl(name);
 	var pdfview = getPdfView(pdfurl);
-	$scope.url = {"ether": etherurl, "pdf": pdfurl, "pdfview": pdfview};
+
+	// authenticate the user and if successfull, update the scope with the
+	// urls, else show a message with alert
+	$http.post('rest/user/createsessions', {'group': group}).success(function() {
+		$scope.url = {"ether": etherurl, "pdf": pdfurl, "pdfview": pdfview};
+		console.log("setting scope: " + JSON.stringify($scope.url));
+	}).error(function(result) {
+		alert("You don't have permission to view or edit this document.");
+		$location.path('/main');
+	});
+
 
 	// the edit menu should be hidden when the view is left
 	$scope.$on('$locationChangeStart', function(event, next, current) {
@@ -235,7 +247,7 @@ angular.module('myApp.controllers', [])
 }])
 
 .controller('ManageGroupsController', ['$scope', '$http', '$location', function($scope, $http, $location) {
-	$http.get("back/isloggedin.php").error(function() {
+	$http.get("rest/isloggedin").error(function() {
 		$location.path("/login");
 	});
 }]);
