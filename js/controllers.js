@@ -150,7 +150,7 @@ angular.module('myApp.controllers', [])
 	// refresh the file list in manageFiles dialog box by getting a list of
 	// files from "rest/isloggedin"
 	function refreshFiletable() {
-		$http.get("rest/files/"+name).success(function(result) {
+		$http.get("rest/files/?documentid="+name).success(function(result) {
 			// set the files list
 			$scope.files = result;
 		}).error(function(result) {
@@ -161,7 +161,7 @@ angular.module('myApp.controllers', [])
 	$("#fileuploadbtn").click(function() {
 		var formdata = new FormData($("#fileform")[0]);
 		$.ajax({
-			url: 'rest/files/'+name,
+			url: 'rest/files/?documentid='+name,
 			type: 'POST',
 			data: formdata,
 			contentType: false,

@@ -88,3 +88,14 @@ Route::filter('csrf', function()
 		throw new Illuminate\Session\TokenMismatchException;
 	}
 });
+
+
+Route::filter('hasaccess', function() 
+{
+	$user = Auth::user();
+	$docid = Input::get('documentid');
+	if (!$user -> hasAccessToDocument($docid)) {
+		Return Response::make('Unauthorized', 401);
+	}
+});
+

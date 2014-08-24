@@ -53,19 +53,24 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
-		// list files of a document
-		Route::get('files/{documentid}', 'FileController@index');
+		// all file commands require a get/post parameter 'documentid' 
+		// and that the user has access to the document in question
+		Route::group(array('before' => 'hasaccess'), function() 
+		{
+			// list files of a document
+			Route::get('files', 'FileController@index');
 
-		// download a single file
-		Route::get('files/{documentid}/{filename}', 'FileController@download');
+			// store a file
+			Route::post('files', 'FileController@store');
 
-		// store a file
-		Route::post('files/{documentid}', 'FileController@store');
+			// download a single file
+			Route::get('files/{filename}', 'FileController@download');
 
-		// delete a file
-		Route::delete('files/{documentid}/{fileid}', 'FileController@destroy');
+			// delete a file
+			Route::delete('files/{fileid}', 'FileController@destroy');
 
-		// rename a file
-		Route::post('files/{documentid}/rename', 'FileController@rename');
+			// rename a file
+			Route::post('files/rename', 'FileController@rename');
+		});
 	});
 });

@@ -6,9 +6,9 @@ class FileController  extends \BaseController {
 		'image/gif', 'image/jpeg', 'image/pjpeg', 'image/png', 
 		'image/svg+xml', 'image/vnd.djvu');
 
-	public function index($documentid)
+	public function index()
 	{
-		$doc = Document::find($documentid);
+		$doc = Document::find(Input::get('documentid'));
 
 		$notlisting = array('.', '..',
 			$doc -> id . '.aux',
@@ -29,10 +29,10 @@ class FileController  extends \BaseController {
 		return Response::json($files);
 	}
 
-	public function store($documentid)
+	public function store()
 	{
 		// get the document
-		$doc = Document::find($documentid);
+		$doc = Document::find(Input::get('documentid'));
 
 		// check that the file is valid
 		if (!$this -> validateFileType(Input::file('file') -> getRealPath())) {
@@ -46,12 +46,12 @@ class FileController  extends \BaseController {
 		Input::file('file') -> move($doc -> absdir(), $filename);
 	}
 
-	public function destroy($documentid, $fileid) 
+	public function destroy($fileid) 
 	{
 
 	}
 
-	public function rename($documentid)
+	public function rename()
 	{
 
 	}
