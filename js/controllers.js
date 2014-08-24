@@ -221,15 +221,6 @@ angular.module('myApp.controllers', [])
 		alert(url);
 	});
 
-	// to download a file
-	$scope.download = function(file) {
-		$http.post("rest/isloggedin", {
-			"documentname": name, "file": file, "groupid": group
-		}).success(function(result) {
-		}).error(function(result) {
-		});
-	};
-
 	// to upload a file
 	$scope.upload = function() {
 	};

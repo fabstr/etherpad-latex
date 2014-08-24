@@ -56,6 +56,29 @@ class FileController  extends \BaseController {
 
 	}
 
+	public function download($filename)
+	{
+		// get the document and the path to the file
+		$doc = Document::find(Input::get('documentid'));
+		$path = $doc -> absdir() . '/' . $filename;
+
+		// get mime type of the file
+		$finfo = finfo_open(FILEINFO_MIME_TYPE);
+		$mime = finfo_file($finfo, $path);
+		finfo_close($finfo);
+
+		// get file size 
+		$size = filesize($path);
+
+		// write headers
+		header('Content-type: ' . $mime);
+		header('Content-length: ' . $size);
+		header('Content-dispositiono: filename="'.$filename.'"');
+
+		// write file
+		readfile($path);
+	}
+
 	private function validateFileType($filename)
 	{
 		// get the mime type of the file

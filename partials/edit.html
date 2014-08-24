@@ -11,9 +11,9 @@
 			<th>Actions</th>
 		</thead>
 		<tr ng-repeat="f in files">
-			<td><a href="rest/files/{{name}}/{{f}}">{{f}}</a></td>
+			<td><a href="rest/files/{{f}}?documentid={{name}}">{{f}}</a></td>
 			<td>
-				<a href="" ng-click="download(f)" title="Download {{f}}"><span class="glyphicon glyphicon-download"></span></a>
+				<a href="rest/files/{{f}}?documentid={{name}}" title="Download {{f}}"><span class="glyphicon glyphicon-download"></span></a>
 				<a href="" ng-click="rename(f)" title="Rename {{f}}"><span class="glyphicon glyphicon-share-alt"></span></a>
 				<a href="" ng-click="delete(f)" title="Delete {{f}}"><span class="glyphicon glyphicon-trash"></span></a>
 			</td>
