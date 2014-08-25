@@ -28,7 +28,7 @@ class PdfController  extends \BaseController {
 
 		header('Content-type: ' . $contenttype);
 		header('Content-length: ' . $size);
-		header('Content-dispositiono: filename="'.$filename.'"');
+		header('Content-disposition: filename="'.$filename.'.pdf"');
 		readfile($filepath);
 	}
 }
