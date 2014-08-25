@@ -17,7 +17,8 @@ class FileController  extends \BaseController {
 			$doc -> id . '.log',
 			$doc -> id . '.out',
 			$doc -> id . '.pdf',
-			$doc -> id . '.tex');
+			$doc -> id . '.tex',
+			$doc -> id . '.toc');
 
 		// remove all files in notlisting
 		$files = array_diff($doc -> listFiles(), $notlisting);
