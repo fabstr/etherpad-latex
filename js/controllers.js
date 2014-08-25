@@ -204,7 +204,10 @@ angular.module('myApp.controllers', [])
 	// refresh the file list and show the dialog box
 	$("#managefilesLink").click(function() {
 		refreshFiletable();
-		$("#filebox").dialog();
+		$("#filebox").dialog({
+			width: 350,
+			height: 500
+		});
 		$("#fileupload").hide();
 	});
 
