@@ -95,6 +95,7 @@ Route::filter('hasaccess', function()
 	$user = Auth::user();
 	$docid = Input::get('documentid');
 	if (!$user -> hasAccessToDocument($docid)) {
+		Log::info("user " . $user -> id . " has no access to " . $docid);
 		Return Response::make('Unauthorized', 401);
 	}
 });
