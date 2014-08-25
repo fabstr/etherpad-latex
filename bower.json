@@ -16,7 +16,6 @@
   ],
   "dependencies": {
     "jquery": "~2.1.1",
-    "normalize.css": "~3.0.1",
     "angular": "~1.2.21",
     "angular-route": "~1.2.21",
     "jquery-ui": "~1.11.0",
