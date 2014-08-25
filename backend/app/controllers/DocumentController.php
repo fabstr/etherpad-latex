@@ -48,14 +48,7 @@ class DocumentController extends \BaseController {
 	public function compile()
 	{
 		$input = Input::json();
-		$name = $input -> get('name');
-
-		if (!Auth::user()->hasAccessToDocument($name)) {
-			return Response::json(array(
-				'failure' => 'You don\'t have access to this document',
-				'document' => $name
-			));
-		}
+		$name = $input -> get('documentid');
 
 		try {
 			$lc = new LatexCompiler($name);

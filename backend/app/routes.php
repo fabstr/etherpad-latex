@@ -42,8 +42,6 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
-		// to compile the document
-		Route::post('documents/compile', 'DocumentController@compile');
 
 		// list the documents
 		Route::get('documents', 'DocumentController@index');
@@ -53,10 +51,14 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
-		// all file commands require a get/post parameter 'documentid' 
-		// and that the user has access to the document in question
+		// all file commands (and compiling) require a get/post 
+		// parameter 'documentid' and that the user has access to the 
+		// document in question
 		Route::group(array('before' => 'hasaccess'), function() 
 		{
+			// to compile the document
+			Route::post('documents/compile', 'DocumentController@compile');
+
 			// list files of a document
 			Route::get('files', 'FileController@index');
 
