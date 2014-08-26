@@ -1,0 +1,40 @@
+<div class="col-md-2">&nbsp;</div>
+<div class="col-md-8">
+	<h2>Group: {{groupname}}</h2>
+
+	<h3>Owner</h3>
+	<p>{{owner.username}}</p>
+
+	<h3>Members</h3>
+	<table class="table table-striped">
+		<thead>
+			<th>Username</th>
+			<th class="right">Actions</th>
+		</thead>
+		<tbody>
+		<tr ng-repeat="m in members">
+			<td>{{m.username}}</td>
+			<td class="right">
+				<a href="" ng-click="removeUser(m.id)" title="Remove user"><span class="glyphicon glyphicon-remove"></a>
+			</td>
+		</tr>
+	</table>
+
+	<!--<h3>Documents</h3>-->
+	<!--<ul>-->
+		<!--<li ng-repeat="d in documents">-->
+			<!--<a href="#/edit/{{ethergroup}}/{{d.id}}">{{d.documentname}}</a>-->
+		<!--</li>-->
+	<!--</ul>-->
+
+	<h3>Add a user</h3>
+	<form role="form">
+		<div class="form-group">
+			<label for="username">Username</label>
+			<input type="text" id="username" placeholder="Username" class="form-control" ng-model="adduser.username"/>
+		</div>
+		<button ng-click="adduser(adduser.username)" class="btn btn-default">Add user</button>
+	</form>
+
+</div>
+<div class="col-md-2">&nbsp;</div>
