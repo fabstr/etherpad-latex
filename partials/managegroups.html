@@ -1,1 +1,20 @@
-grupper
+<div class="col-md-2">&nbsp;</div>
+<div class="col-md-8">
+	<h2>Add a group</h2>
+	<h2>Groups</h2>
+	<table class="table table-striped">
+		<thead>
+			<th>Group</th>
+			<th class="right">Actions</th>
+		</thead>
+		<tbody>
+		<tr ng-repeat="g in groups">
+			<td><a href='#/groupdetails/{{g.id}}'>{{g.groupname}}</a></td>
+			<td class="right">
+				<a href="" title="Delete group"><span class="glyphicon glyphicon-remove"></a>
+			</td>
+		</tr>
+	</table>
+	<p>Click a group to show its members and documents.</p>
+</div>
+<div class="col-md-2">&nbsp;</div>
