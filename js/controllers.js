@@ -106,6 +106,18 @@ angular.module('myApp.controllers', [])
 		});
 	};
 
+	$scope.removeDocument = function(documentid) {
+		$http({
+			method: 'DELETE',
+			url: 'rest/documents/'+documentid
+		}).success(function() {
+			listDocuments();
+		}).error(function(result) {
+			alert('Could not remove document.');
+		});
+
+	}
+
 	// get the user's groups
 	$http.get('rest/groups').success(function(result) {
 		$scope.groups = result;

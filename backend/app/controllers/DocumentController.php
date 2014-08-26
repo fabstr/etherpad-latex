@@ -149,10 +149,56 @@ class DocumentController extends \BaseController {
 		if (!Auth::user() -> hasAccessToDocument($documentid)) {
 			return Response::json(array(
 				'failure' => 'No access to document'
-			), 400);
+			), 401);
 		}
 
 		$doc -> documentname = $newname;
 		$doc -> save();
+	}
+
+	/**
+ 	 * Remove the document from the database and etherpad.
+	 *
+	 * First check that the user has access to the document.
+	 *
+	 * Three things happen:
+	 * 1. The document is removed from etherpad
+	 * 2. The files are deleted from disk
+	 * 3. The document is removed from the database
+	 *
+	 * @param int documentid
+	 */
+	public function destroy($documentid)
+	{
+		if (!Auth::user() -> hasAccessToDocument($documentid)) {
+			return Response::json(array(
+				'failure' => 'No access to document'
+			), 401);
+		}
+
+		// get the document
+		$doc = Document::find($documentid);
+
+		// 1. remove the document from etherpad
+		$pm = new PadManager();
+		$pm -> deletePad($doc -> getPadId());
+
+		// 2. remove the files from disk: list the files in the 
+		// directory, remove then and finally the directory
+		$dir = $doc -> absdir();
+		foreach (scandir($dir) as $file) {
+			if ($file != "." && $file != "..") {
+				unlink($dir . "/" . $file);
+			}
+		}
+		rmdir($dir);
+
+		// 3. remove the document from the database
+		$doc -> delete();
+
+		Log::info('Document was removed', array(
+			'documentid' => $documentid,
+			'user' => Auth::id()
+		));
 	}
 }

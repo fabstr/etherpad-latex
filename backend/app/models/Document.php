@@ -50,23 +50,27 @@ class Document extends Eloquent {
 		return $files;
 	}
 
-
 	/**                                                                                                                       
 	 * Compute the padid of this document and the given group id.                                                        
 	 *                                                                                                                 
 	 * The padid is the concatenation of the group's ethergroupname, a '$'                                                    
-	 * and the docucument's id.                                                                                               
+	 * and the docucument's id. If $groupid is false or not set, ethergroup()
+	 * will be used.
 	 *                                                                                                                       
 	 * @param int groupid                                                                                                   
 	 * @return The padid                                                                                                   
 	 */                                                                                                                   
-	public function getPadId($groupid)                                                                                 
+	public function getPadId($groupid = false)
 	{                                                                                                                  
-		// get the group                                                                                                  
-		$group = Group::find($groupid);                                                                                  
+		$ethergroupname = "";
 
-		// get the groups etherpadname                                                                                  
-		$ethergroupname = $group -> ethergroupname;                                                                    
+		if ($groupid) {
+			// get the group and the etherpad name
+			$group = Group::find($groupid);                                                                                  
+			$ethergroupname = $group -> ethergroupname;                                                                    
+		} else {
+			$ethergroupname = $this -> ethergroup();
+		}
 
 		// make the concatenation and return the pad id                                                               
 		$padid = $ethergroupname . '$' . $this -> id;                                                                

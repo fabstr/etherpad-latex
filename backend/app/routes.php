@@ -48,6 +48,9 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// create a document
 		Route::post('documents', 'DocumentController@store');
 
+		// delete a document
+		Route::delete('documents/{documentid}', 'DocumentController@destroy');
+
 		// change the name of a document
 		Route::post('documents/{documentid}/name', 'DocumentController@changeName');
 
