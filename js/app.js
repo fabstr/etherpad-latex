@@ -15,5 +15,6 @@ config(['$routeProvider', function($routeProvider) {
   $routeProvider.when('/logout', {templateUrl: 'partials/logout.html', controller: 'LogoutController'});
   $routeProvider.when('/edit/:group/:name', {templateUrl: 'partials/edit.html', controller: 'EditController'});
   $routeProvider.when('/groups/', {templateUrl: 'partials/managegroups.html', controller: 'ManageGroupsController'});
+  $routeProvider.when('/groupdetails/:groupid/', {templateUrl: 'partials/groupdetails.html', controller: 'GroupDetailsController'});
   $routeProvider.otherwise({redirectTo: '/login'});
 }]);

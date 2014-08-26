@@ -123,7 +123,7 @@ angular.module('myApp.controllers', [])
 		if (download == true) {
 			url += "download/";
 		}
-		
+
 		url += name + ".pdf";
 		return url;
 	}
@@ -282,4 +282,55 @@ angular.module('myApp.controllers', [])
 	$http.get("rest/isloggedin").error(function() {
 		$location.path("/login");
 	});
+
+
+	// list the user's groups
+	$http.get('rest/groups').success(function(groups) {
+		$scope.groups = groups;
+	}).error(function(result) {
+		alert('Could not get groups: ' + JSON.stringify(result));
+	});
+
+}])
+
+.controller('GroupDetailsController', ['$scope', '$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams) {
+	$http.get("rest/isloggedin").error(function() {
+		$location.path("/login");
+	});
+
+	// get the groupid 
+	var groupid = $routeParams.groupid;
+
+	// get the details for the group
+	function getDetails() {
+		$http.get('rest/groups/'+groupid).success(function(result) {
+			$scope.groupname = result.groupname;
+			$scope.owner = result.owner;
+			$scope.members = result.members;
+			$scope.documents = result.documents;
+		}).error(function(result) {
+			alert('Could not get group details: ' + JSON.stringify(result));
+		});
+	}
+
+	// get the details now
+	getDetails();
+
+	$scope.adduser = function(username) {
+		$http.post('rest/groups/'+groupid, {username: username}).success(function(){
+			getDetails();
+		}).error(function(result) {
+			alert('Could not add user to group: ' + JSON.stringify(result));
+		});
+	};
+
+	$scope.removeUser = function(userid) {
+		$http({
+			method: 'DELETE',
+			url: 'rest/groups/'+groupid+'/'+userid
+		}).success(function() {
+			getDetails();
+		}).error(function(result) {
+		});
+	};
 }]);
