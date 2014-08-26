@@ -74,14 +74,15 @@ class Group extends Eloquent {
 	{
 		parent::boot();
 
-		// when the group is created, get the etherpad group name
-		// and save this with the group
+		// When the group is created, get the etherpad group name
+		// and save this with the group. As mapping for etherpad we
+		// use the sha1 hash of the concatenation of the group name and 
+		// the user id.
 		static::creating(function($group) {
 			try {
+				$mapper = sha1($group -> groupname . $group -> user_id);
 				$pm = new PadManager();
-				$group -> ethergroupname = $pm 
-					-> createGroupIfNotExistsFor(
-						$group -> id);
+				$group -> ethergroupname = $pm -> createGroupIfNotExistsFor($mapper);
 			} catch (EtherpadException $e) {
 				return false;
 			}
