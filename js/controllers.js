@@ -87,6 +87,13 @@ angular.module('myApp.controllers', [])
 	};
 
 	$scope.changeDocumentName = function(documentid, newname) {
+		$http.post('rest/documents/'+documentid+'/name', {
+			newname: newname
+		}).success(function() {
+			listDocuments();
+		}).error(function(result) {
+			alert('Could not change name.');
+		});
 	};
 
 	$scope.changeDocumentGroup = function(documentid, newgroupid) {

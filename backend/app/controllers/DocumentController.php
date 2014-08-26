@@ -130,4 +130,29 @@ class DocumentController extends \BaseController {
 		// sucecss, commit and return
 		DB::commit();
 	}
+
+	/**
+         * Change the name of the document.
+	 *
+	 * The name can only be changed if the user has access to the document.
+	 */
+	public function changeName($documentid)
+	{
+		// get the document
+		$doc = Document::find($documentid);
+
+		// get the new name
+		$input = Input::json();
+		$newname = $input -> get('newname');
+
+		// check if the user has access
+		if (!Auth::user() -> hasAccessToDocument($documentid)) {
+			return Response::json(array(
+				'failure' => 'No access to document'
+			), 400);
+		}
+
+		$doc -> documentname = $newname;
+		$doc -> save();
+	}
 }
