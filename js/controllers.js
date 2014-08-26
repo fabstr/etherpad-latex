@@ -283,14 +283,41 @@ angular.module('myApp.controllers', [])
 		$location.path("/login");
 	});
 
-
 	// list the user's groups
-	$http.get('rest/groups').success(function(groups) {
-		$scope.groups = groups;
-	}).error(function(result) {
-		alert('Could not get groups: ' + JSON.stringify(result));
-	});
+	function listGroups() {
+		$http.get('rest/groups').success(function(groups) {
+			$scope.groups = groups;
+		}).error(function(result) {
+			alert('Could not get groups: ' + JSON.stringify(result));
+		});
+	}
 
+	// remove a group
+	$scope.removeGroup = function (groupid) {
+		$http({
+			method: 'DELETE',
+			url: 'rest/groups/'+groupid
+		}).success(function() {
+			listGroups();
+		}).error(function(result) {
+			alert('Could not remove group.');
+		});
+	}
+
+	
+	$scope.addgroup = function(groupname) {
+		$http.post('rest/groups', {
+			groupname: groupname
+		}).success(function() {
+			// update the group list
+			listGroups();
+		}).error(function(result) {
+			alert('Could not add group');
+		});
+	};
+
+	// list the groups now
+	listGroups();
 }])
 
 .controller('GroupDetailsController', ['$scope', '$http', '$location', '$routeParams', function($scope, $http, $location, $routeParams) {
