@@ -1,0 +1,27 @@
+<div class="col-md-2">&nbsp;</div>
+<div class="col-md-8">
+	<h2>Groups</h2>
+	<table class="table table-striped">
+		<thead>
+			<th>Group</th>
+			<th class="right">Actions</th>
+		</thead>
+		<tbody>
+		<tr ng-repeat="g in groups">
+			<td><a href='#/groupdetails/{{g.id}}'>{{g.groupname}}</a></td>
+			<td class="right">
+				<a href="" ng-click="removeGroup(g.id)" title="Delete group"><span class="glyphicon glyphicon-remove"></a>
+			</td>
+		</tr>
+	</table>
+	<p>Click a group to show its members and documents.</p>
+	<h2>Add a group</h2>
+	<form role="form">
+		<div class="form-group">
+			<label for="groupname">Groupname</label>
+			<input type="text" id="groupname" placeholder="Groupname" class="form-control" ng-model="addgroup.groupname"/>
+		</div>
+		<button ng-click="addgroup(addgroup.groupname)" class="btn btn-default">Add group</button>
+	</form>
+</div>
+<div class="col-md-2">&nbsp;</div>
