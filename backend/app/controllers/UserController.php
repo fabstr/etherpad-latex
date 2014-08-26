@@ -33,13 +33,18 @@ class UserController extends \BaseController {
 		));
 
 		// put the user in the group
-		$user -> groups() -> attach($group -> id);
+		$group -> addUser($user -> id);
 
 		// commit the user to the database
 		DB::commit();
 
 		// login the user
 		Auth::login($user);
+
+		Log::info('User created', array(
+			'username' => $username,
+			'userid' => $user -> id
+		));
 
 		// return the user 
 		return Response::json(array(
@@ -62,7 +67,7 @@ class UserController extends \BaseController {
 		$user = Auth::user();
 		$sessionIDs = "";
 		$pm = new PadManager();
-		foreach ($user -> groups as $g) {
+		foreach ($user -> groups() as $g) {
 			if ($g -> ethergroupname == $group) {
 				$groupfound = true;
 			}
@@ -81,6 +86,11 @@ class UserController extends \BaseController {
 				'groups' => $user -> groups
 			), 404);
 		}
+
+		Log::info('Session created', array(
+			'userid' => $user -> id,
+			'sessionID' => $sessionIDs
+		));
 
 		setcookie("sessionID", $sessionIDs, $validuntil, "/");
 		return Response::json(array(

@@ -36,19 +36,25 @@ class DocumentController extends \BaseController {
 		$group = $user -> mainGroup();
 
 		// create the document
-		$doc = new Document(array(
+		$doc = Document::create(array(
 			'documentname' => $documentname,
 			'group_id' => $group -> id
 		));
 
-		// put the document in the group
-		$group -> documents() -> save($doc);
+		Log::info('Document created', array(
+			'userid' => $user -> id,
+			'groupid' => $group -> id,
+			'documentname' => $documentname,
+			'documentid' => $doc -> id
+		));
 	}
 
 	public function compile()
 	{
 		$input = Input::json();
 		$name = $input -> get('documentid');
+
+		Log::debug('Compiling document', array('documentid' => $name));
 
 		try {
 			$lc = new LatexCompiler($name);

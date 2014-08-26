@@ -45,6 +45,12 @@ class FileController  extends \BaseController {
 		// move the uploaded file
 		$filename = Input::file('file') -> getClientOriginalName();
 		Input::file('file') -> move($doc -> absdir(), $filename);
+
+		// log the request
+		Log::info('Storing file', array(
+			'document' => $doc -> id,
+			'filename' => $filename
+		));
 	}
 
 	public function destroy($filename) 
@@ -55,6 +61,12 @@ class FileController  extends \BaseController {
 
 		// delete the file
 		unlink($path);
+
+		// log
+		Log::info('Deleting file', array(
+			'document' => $doc -> id,
+			'filename' => $filename
+		));
 	}
 
 	public function rename()
@@ -79,6 +91,12 @@ class FileController  extends \BaseController {
 		$oldfile = $dir . '/' . $oldfile;
 		$newfile = $dir . '/' . $newfile;
 		rename($oldfile, $newfile);
+
+		Log::info('Renaming file', array(
+			'document' => $doc -> id,
+			'oldfile' => $oldfile,
+			'newfile' => $newfile
+		));
 	}
 
 	public function download($filename)

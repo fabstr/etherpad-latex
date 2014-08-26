@@ -24,6 +24,11 @@ class LoginController  extends \BaseController {
 			));
 		} 
 
+		// log the failure
+		Log::info('Login failure', array(
+			'username' => $input -> get('username')
+		));
+
 		// else return failure
 		return Response::json(array(
 			'status' => 'failure'
