@@ -18,6 +18,7 @@
 		<script src="bower_components/jquery-ui/jquery-ui.min.js"></script>
 		<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 		<script src="js/settings.js"></script>
+		<script> function menuClick(e) { $('li.active').removeClass('active'); $(e).addClass('active'); } </script>
 	</head>
 	<body>
 		<div id="navbarLoggedin" class="navbar navbar-default navbar-fixed-top" role="navigation">
@@ -33,9 +34,9 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav">
-						<li class="active"><a href="#/main">Documents</a></li>
-						<li><a href="#/groups">Manage groups</a></li>
-						<li><a href="#/logout">Logout</a></li>
+						<li onclick="menuClick(this);" class="active"><a href="#/main">Documents</a></li>
+						<li onclick="menuClick(this);" ><a href="#/groups">Manage groups</a></li>
+						<li onclick="menuClick(this);" ><a href="#/logout">Logout</a></li>
 					</ul>
 					<ul class="nav navbar-nav navbar-right" id="editMenu" style="display: none;">
 						<li><a href="" id="compileLink">Compile</a></li>
