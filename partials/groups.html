@@ -10,6 +10,7 @@
 		<tr ng-repeat="g in groups">
 			<td><a href='#/groupdetails/{{g.id}}'>{{g.groupname}}</a></td>
 			<td class="right">
+				{{g}}
 				<a href="" ng-click="removeGroup(g.id)" title="Delete group"><span class="glyphicon glyphicon-remove"></a>
 			</td>
 		</tr>

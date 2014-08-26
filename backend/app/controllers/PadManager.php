@@ -46,7 +46,7 @@ class PadManager {
 	private $apikey;
 
 	public function __construct () {
-		$this -> url = $_ENV['ETHERPADLITE_HOST'] . "/api/1.2.8/";
+		$this -> url = $_ENV['ETHERPADLITE_HOST'] . "/api/1.2.9/";
 		$this -> apikey = $_ENV['ETHERPADLITE_APIKEY'];
 	}
 
@@ -277,6 +277,28 @@ class PadManager {
 	public function deletePad($padID) {
 		$cmd = new EtherpadLiteCommand("deletePad", array(
 			"padID" => $padID));
+		$data = $this -> executeEtherpadQuery($cmd);
+	}
+
+	public function copyPad($sourceID, $destinationID, $force = false) {
+		$cmd = new EtherpadLiteCommand("copyPad", array(
+			'sourceID' => $sourceID,
+			'destinationID' => $destinationID
+		));
+		if ($force) {
+			$cmd -> setArgument('force', $force);
+		}
+		$data = $this -> executeEtherpadQuery($cmd);
+	}
+
+	public function movePad($sourceID, $destinationID, $force = false) {
+		$cmd = new EtherpadLiteCommand("movePad", array(
+			'sourceID' => $sourceID,
+			'destinationID' => $destinationID
+		));
+		if ($force) {
+			$cmd -> setArgument('force', $force);
+		}
 		$data = $this -> executeEtherpadQuery($cmd);
 	}
 

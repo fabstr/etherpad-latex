@@ -38,3 +38,7 @@ iframe#etherpad {
 	overflow-y: scroll;
 	padding: 0px;
 }
+
+.documentOptions {
+	margin-top: 20px;
+}

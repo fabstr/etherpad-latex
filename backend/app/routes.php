@@ -48,6 +48,12 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// create a document
 		Route::post('documents', 'DocumentController@store');
 
+		// change the name of a document
+		Route::post('documents/{documentid}/name', 'DocumentController@changeName');
+
+		// change the group of a document
+		Route::post('documents/{documentid}/group', 'DocumentController@changeGroup');
+
 
 
 		// list the user's groups

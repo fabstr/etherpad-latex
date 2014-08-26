@@ -49,4 +49,27 @@ class Document extends Eloquent {
 		$files = scandir($this -> absdir());
 		return $files;
 	}
+
+
+	/**                                                                                                                       
+	 * Compute the padid of this document and the given group id.                                                        
+	 *                                                                                                                 
+	 * The padid is the concatenation of the group's ethergroupname, a '$'                                                    
+	 * and the docucument's id.                                                                                               
+	 *                                                                                                                       
+	 * @param int groupid                                                                                                   
+	 * @return The padid                                                                                                   
+	 */                                                                                                                   
+	public function getPadId($groupid)                                                                                 
+	{                                                                                                                  
+		// get the group                                                                                                  
+		$group = Group::find($groupid);                                                                                  
+
+		// get the groups etherpadname                                                                                  
+		$ethergroupname = $group -> ethergroupname;                                                                    
+
+		// make the concatenation and return the pad id                                                               
+		$padid = $ethergroupname . '$' . $this -> id;                                                                
+		return $padid;                                                                                              
+	}
 }

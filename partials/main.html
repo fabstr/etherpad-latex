@@ -28,10 +28,39 @@
 			<th class="right">Actions</th>
 		</thead>
 		<tr ng-repeat="d in documents">
-			<td><a href="#/edit/{{d.ethergroupname}}/{{d.id}}">{{d.name}}</a></td>
+			<td>
+				<div>
+					<a href="#/edit/{{d.ethergroupname}}/{{d.id}}">{{d.name}}</a>
+				</div>
+				<div class="documentOptions" ng-show="d.showoptions">
+					<form role="form" class="form-horizontal">
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="newname">Change document name</label>
+							<div class="col-sm-7">
+								<input type="text" id="newname" class="form-control" ng-model="d.options.newname" placeholder="New name">
+							</div>
+							<div class="col-sm-1">
+								<button ng-click="changeDocumentName(d.id, d.options.newname)" class="btn btn-default">Change name</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<label class="col-md-4 control-label" for="newgroup">Change document group</label>
+							<div class="col-sm-7">
+								<select ng-model="d.options.newgroup" ng-options="opt.id as opt.groupname for opt in groups">
+								</select>
+							</div>
+							<div class="col-sm-1">
+								<button ng-click="changeDocumentGroup(d.id, d.options.newgroup)" class="btn btn-default">Change group</button>
+							</div>
+						</div>
+						<div class="form-group">
+							<p class="col-sm-12">Current group: {{d.groupname}}</p>
+						</div>
+					</form>
+				</div>
+			</td>
 			<td class="right">
-				<a href="#/edit/{{d.ethergroupname}}/{{d.id}}" title="Edit {{d.name}}"><span class="glyphicon glyphicon-pencil"></span></a>
-				<a href="#/managegroups/{{d.id}}" title="Manage groups for {{d.name}}"><span class="glyphicon glyphicon-user"></span></a>
+				<a href="" ng-click="d.showoptions = !d.showoptions" title="View or hide options for {{d.name}}"><span class="glyphicon glyphicon-pencil"></span></a>
 				<a href="#/delete/{{d.id}}" title="Delete {{d.name}}"><span class="glyphicon glyphicon-trash"></span></a>
 			</td>
 		</tr>

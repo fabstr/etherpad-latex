@@ -86,6 +86,24 @@ angular.module('myApp.controllers', [])
 		});
 	};
 
+	$scope.changeDocumentName = function(documentid, newname) {
+	};
+
+	$scope.changeDocumentGroup = function(documentid, newgroupid) {
+		$http.post('rest/documents/'+documentid+'/group', {
+			groupid: newgroupid
+		}).success(function() {
+			listDocuments();
+		}).error(function(result) {
+			alert('Could not change group.');
+		});
+	};
+
+	// get the user's groups
+	$http.get('rest/groups').success(function(result) {
+		$scope.groups = result;
+	});
+
 	listDocuments();
 }])
 

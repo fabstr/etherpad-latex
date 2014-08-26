@@ -27,7 +27,17 @@ class User extends Eloquent implements UserInterface {
 
 	public function groups()
 	{
-		return Group::where('groups.user_id', '=', $this -> id) -> get();
+		// select distinct id as groupid, group_user.user_id as currentuserid, groupname, ethergroupname, groups.user_id, created_at, updated_at
+		// from group_user 
+		// left join groups on groups.id = group_user.group_id
+		//
+		//return Group::where('groups.user_id', '=', $this -> id) -> get();
+		return DB::table('group_user')
+			-> leftJoin('groups', 'groups.id', '=', 'group_user.group_id')
+			-> where('group_user.user_id', '=', $this -> id)
+			-> select('groups.id as id', 'group_user.user_id as currentuserid', 'groupname', 'ethergroupname', 'groups.user_id', 'created_at', 'updated_at')
+			-> distinct()
+			-> get();
 	}
 
 	public function documents()
@@ -45,7 +55,7 @@ class User extends Eloquent implements UserInterface {
 			-> leftJoin('group_user', 'users.id', '=', 'group_user.user_id') 
 			-> leftJoin('groups', 'group_user.group_id', '=', 'groups.id')
 			-> rightJoin('documents', 'documents.group_id', '=', 'groups.id')
-			-> select('documentname as name', 'documents.id as id', 'groups.ethergroupname as ethergroupname')
+			-> select('documentname as name', 'documents.id as id', 'groups.groupname as groupname', 'groups.ethergroupname as ethergroupname', 'groups.id as groupid')
 			-> where('users.id', '=', $this -> id)
 			-> get();
 	}
@@ -60,6 +70,19 @@ class User extends Eloquent implements UserInterface {
 		}
 
 		return false;
+	}
+
+	public function hasAccessToGroup($groupid) 
+	{
+		$count = DB::table('group_user')
+			-> where('user_id', '=', $this -> id)
+			-> where('group_id', '=', $groupid)
+			-> count();
+		Log::debug($count, array(
+			'user' => $this -> id,
+			'group' => $groupid
+			));
+		return $count > 0;
 	}
 
 	public static function boot()
