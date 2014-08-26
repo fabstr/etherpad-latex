@@ -42,12 +42,31 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
-
 		// list the documents
 		Route::get('documents', 'DocumentController@index');
 
 		// create a document
 		Route::post('documents', 'DocumentController@store');
+
+
+
+		// list the user's groups
+		Route::get('groups', 'GroupController@index');
+
+		// create a group
+		Route::post('groups', 'GroupController@store');
+
+		// get the contents of the group $groupid
+		Route::get('groups/{groupid}', 'GroupController@show');
+
+		// add a user to the group
+		Route::post('groups/{groupid}', 'GroupController@addUser');
+
+		// remve a user from a group
+		Route::delete('groups/{groupid}/{userid}', 'GroupController@removeUser');
+
+		// remove a group
+		Route::delete('groups/{groupid}', 'GroupController@destroy');
 
 
 

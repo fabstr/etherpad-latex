@@ -15,7 +15,7 @@ class User extends Eloquent implements UserInterface {
 	 *
 	 * @var array
 	 */
-	protected $hidden = array('password', 'remember_token');
+	protected $hidden = array('password', 'remember_token', 'authorid', 'created_at', 'updated_at');
 
 	protected $fillable = array('username', 'password');
 
@@ -27,19 +27,19 @@ class User extends Eloquent implements UserInterface {
 
 	public function groups()
 	{
-		return $this -> belongsToMany('Group');
+		return Group::where('groups.user_id', '=', $this -> id) -> get();
 	}
 
 	public function documents()
 	{
-		// select documentname as name, documents.id as id, 
-		//        groups.ethergroupname as ethergroupname
-		// from users left join group_user 
-		//                      on users.id = group_user.user_id
-		//            left join groups 
-		//                      on group_user.group_id = groups.id
-		//            right join documents 
-		//                      on documents.group_id = groups.id
+		// SELECT documentname AS name, documents.id AS id, 
+		//        groups.ethergroupname AS ethergroupname
+		// FROM users LEFT JOIN group_user 
+		//                      ON users.id = group_user.user_id
+		//            LEFT JOIN groups 
+		//                      ON group_user.group_id = groups.id
+		//            RIGHT JOIN documents 
+		//                      ON documents.group_id = groups.id
 
 		return DB::table('users')
 			-> leftJoin('group_user', 'users.id', '=', 'group_user.user_id') 

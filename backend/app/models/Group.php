@@ -9,16 +9,65 @@ class Group extends Eloquent {
 	 */
 	protected $table = 'groups';
 
-	protected $fillable = array('user_id', 'groupname', 'ethergroupname');
+	protected $fillable = array('user_id', 'groupname');
+
+	public function owner()
+	{
+		return User::find($this -> user_id);
+	}
 
 	public function documents()
 	{
-		return $this -> hasMany('Document');
+		return DB::table('documents')
+			-> where('group_id', '=', $this -> id)
+			-> select('id', 'documentname')
+			-> get();
 	}
 
 	public function users()
 	{
-		return $this -> belongsToMany('User');
+		return DB::table('group_user')
+			-> leftJoin('users', 'group_user.user_id', '=', 'users.id')
+			-> where('group_user.group_id', '=', $this -> id)
+			-> select('users.id', 'users.username')
+			-> get();
+	}
+
+
+	public function numberOfDocuments()
+	{
+		return DB::table('documents')
+			-> where('group_id', '=', $this -> id)
+			-> count();
+	}
+
+	/**
+	 * Check if the user is the owner of this group.
+	 * @return bool
+	 */
+	public function isOwner($userid)
+	{
+		return $this -> user_id == $userid;
+	}
+
+
+	public function addUser($userid)
+	{
+		DB::table('group_user') 
+			-> insert(array(
+				'user_id' => $userid,
+				'group_id' => $this -> id
+			));
+	}
+
+	/**
+ 	 * Remove the user $userid from this group.
+	 */
+	public function removeUser($userid)
+	{
+		DB::table('group_user') 
+			-> where('user_id', '=', $userid)
+			-> delete();
 	}
 
 	public static function boot()
