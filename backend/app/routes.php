@@ -79,6 +79,28 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
+		// list the user's snippets 
+		Route::get('snippets', 'SnippetController@index');
+
+		// add a new snippet
+		Route::post('snippets', 'SnippetController@store');
+
+		// the user should have access to the snippets to be able to 
+		// show/delete/update a single snippet
+		Route::group(array('before' => 'hasAccessToSnippet'), function()
+		{
+			// show a single snippet
+			Route::get('snippets/{snippetid}', 'SnippetController@show');
+
+			// delete a snippet
+			Route::delete('snippets/{snippetid}', 'SnippetController@destroy');
+
+			// update a snippet
+			Route::post('snippets/{snippetid}', 'SnippetController@update');
+		});
+
+
+
 		// all file commands (and compiling) require a get/post 
 		// parameter 'documentid' and that the user has access to the 
 		// document in question
