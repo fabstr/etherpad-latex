@@ -47,14 +47,14 @@ class SnippetController extends \BaseController {
 
 
 	/**
-	 * Display the specified resource.
+	 * Return a single snippet.
 	 *
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function show($id)
+	public function show($snippetid)
 	{
-		//
+		return Response::json(Snippet::find($snippetid));
 	}
 
 

@@ -400,4 +400,81 @@ angular.module('myApp.controllers', [])
 		}).error(function(result) {
 		});
 	};
+}])
+
+
+.controller('SnippetsController', ['$scope', '$http', '$location', function($scope, $http, $location, $routeParams){
+	$http.get('rest/isloggedin').error(function() {
+		$location.path('/login');
+	});
+
+	// to get the snippets
+	function listSnippets() {
+		$http.get('rest/snippets').success(function(snippets) {
+			$scope.snippets = snippets;
+		}).error(function(result) {
+			console.log(result);
+			alert('Could not get snippets');
+		});
+	}
+
+	// to add a snippet
+	$scope.createSnippet = function(snippet) {
+		$http.post('rest/snippets', snippet).success(function() {
+			listSnippets();
+		}).error(function(result) {
+			console.log(result);
+			alert('Could not save snippet');
+		});
+	};
+
+
+	// to save/change a snippet
+	$scope.saveSnippet = function(snippet) {
+		$http.post('rest/snippets/' + snippet.id, snippet).success(function() {
+			listSnippets();
+		}).error(function(result) {
+			console.log(result);
+			alert('Could not save the changes to the snippet');
+		});
+	};
+
+	// revert changes to a snippet by getting the old one from the server
+	$scope.revertSnippet = function(snippet) {
+		$http.get('rest/snippets/'+snippet.id).success(function(realsnippet) {
+			$scope.snippets.forEach(function(s) {
+				if (s.id == realsnippet.id) {
+					s.snippetname = realsnippet.snippetname;
+					s.content = realsnippet.content;
+				}
+			});
+			//snippet = realsnippet;
+			//snippet.snippetnamename = realsnippet.snippetnamename;
+			//snippet.content = realsnippet.content;
+		}).error(function(result) {
+			console.log(result);
+			alert('Could not get the old snippet');
+		});
+	};
+
+	// remove a snippet
+	$scope.removeSnippet = function(snippet) {
+		var str = 'Are you sure you want to remove "' + snippet.snippetname;
+		str += '"? This cannot be undone.';
+		if (confirm(str)) {
+			$http({
+				method: 'DELETE',
+				url: 'rest/snippets/'+snippet.id
+			}).success(function() {
+				listSnippets();
+			}).error(function(result) {
+				console.log(result);
+				alert('Could not remove the snippet');
+			});
+		}
+	};
+
+	// list the snippets now
+	listSnippets();
 }]);
+
