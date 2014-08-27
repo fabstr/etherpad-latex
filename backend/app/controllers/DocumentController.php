@@ -180,18 +180,43 @@ class DocumentController extends \BaseController {
 		$doc = Document::find($documentid);
 
 		// 1. remove the document from etherpad
-		$pm = new PadManager();
-		$pm -> deletePad($doc -> getPadId());
+		try {
+			$pm = new PadManager();
+			$pm -> deletePad($doc -> getPadId());
+		} catch (EtherpadException $e) {
+			if ($e -> code == 1) {
+				// the pad does not exist, do nothing
+			} else {
+				// log the failure
+				Log::info('Could not delete pad', array(
+					'padid' => $doc -> getPadId(),
+					'message' => $e -> getMessage(),
+				));
+
+				// some other error, return failure
+				return Response::json(array(
+					'failure' => 'EtherpadException',
+					'message' => $e -> getMessage()
+				));
+			}
+		}
 
 		// 2. remove the files from disk: list the files in the 
 		// directory, remove then and finally the directory
 		$dir = $doc -> absdir();
-		foreach (scandir($dir) as $file) {
-			if ($file != "." && $file != "..") {
-				unlink($dir . "/" . $file);
+		if (!file_exists($dir)) {
+			// the directory (and therefor the files) does not
+			// exist, do nothing
+		} else {
+			// delete the files in the directory
+			foreach (scandir($dir) as $file) {
+				if ($file != "." && $file != "..") {
+					unlink($dir . "/" . $file);
+				}
 			}
+			// delete the directory
+			rmdir($dir);
 		}
-		rmdir($dir);
 
 		// 3. remove the document from the database
 		$doc -> delete();

@@ -34,7 +34,12 @@ class EtherpadLiteCommand {
 }
 
 class EtherpadException extends Exception {
+	public $code;
+	public $message;
+
 	public function __construct ($response) {
+		$this -> code = $response -> code;
+		$this -> message = $response -> message;
 		$str = "Code: " . $response -> code . ", ";
 		$str .= "Message: " . $response -> message;
 		parent::__construct($str);
