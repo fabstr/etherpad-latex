@@ -85,6 +85,15 @@ class User extends Eloquent implements UserInterface {
 		return $count > 0;
 	}
 
+	public function ownTemplate($templateid)
+	{
+		$count = DB::table('templates')
+			-> where('id', '=', $templateid)
+			-> where('user_id', '=', $this -> id)
+			-> count();
+		return $count > 0;
+	}
+
 	public static function boot()
 	{
 		parent::boot();

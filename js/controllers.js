@@ -68,10 +68,25 @@ angular.module('myApp.controllers', [])
 
 	};
 
+	// get a list of the user's templates
+	function listTemplates() {
+		$http.get('rest/templates').success(function(templates) {
+			$scope.templates = templates;
+		}).error(function(result) {
+			alert('Could not list templates.');
+		});
+	};
+
 	$scope.createdocument = function(edit) {
 		if (typeof(edit) === "undefined") edit = false;
-		var data = {'documentname': $scope.document.name};
-		$http.post('rest/documents', data).success(function() {
+
+		// set templateid to 0 mark no tepmlate
+		if (typeof($scope.document.template) === "undefined") $scope.document.template = 0;
+
+		$http.post('rest/documents', {
+			documentname: $scope.document.name,
+			templateid: $scope.document.template
+		}).success(function() {
 			if (edit == true) {
 				$location.path("#edit/"+$scope.document.name);
 			} else {
@@ -122,11 +137,15 @@ angular.module('myApp.controllers', [])
 	}
 
 	// get the user's groups
-	$http.get('rest/groups').success(function(result) {
-		$scope.groups = result;
-	});
+	function listGroups() {
+		$http.get('rest/groups').success(function(result) {
+			$scope.groups = result;
+		});
+	}
 
+	listGroups();
 	listDocuments();
+	listTemplates();
 }])
 
 .controller('EditController', ['$scope', '$routeParams', '$http', '$location', function($scope, $routeParams, $http, $location) {
@@ -400,4 +419,63 @@ angular.module('myApp.controllers', [])
 		}).error(function(result) {
 		});
 	};
+}])
+
+.controller('templatesController', ['$scope', '$http', '$location', function($scope, $http, $location) {
+	// to list the templates
+	function listTemplates() {
+		$http.get('rest/templates').success(function(templates) {
+			$scope.templates = templates;
+		}).error(function(result) {
+			alert('Could not list templates.');
+		});
+	}
+
+	$scope.createTemplate = function(name, content) {
+		$http.post('rest/templates', {
+			templatename: name,
+			content: content
+		}).success(function() {
+			// success, relist the templates
+			listTemplates();
+		}).error(function(result) {
+			alert('Could not create template');
+		});
+
+	};
+
+	$scope.removeTemplate = function(template) {
+		var str = 'Are you sure you want to remove "' + template.name + '"?';
+		str += " This cannot be undone.";
+		if (confirm(str)) {
+			$http({
+				method: 'DELETE',
+				url: 'rest/templates/'+template.id
+			}).success(function(){
+				listTemplates();
+			}).error(function(result) {
+				alert('Could not remove the template.');
+				console.log(result);
+			});
+		}
+	};
+
+	$scope.updateTemplate = function(template) {
+		$http.post('rest/templates/' + template.id, {
+			templatename: template.name,
+			content: template.content
+		}).success(function() {
+			listTemplates();
+		}).error(function(result) {
+			alert('Could not update the template.');
+			console.log(result);
+		});
+	};
+
+	$scope.revertTemplate = function(template) {
+		listTemplates();
+	};
+
+	// list the templates now
+	listTemplates();
 }]);

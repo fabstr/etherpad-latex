@@ -100,3 +100,15 @@ Route::filter('hasaccess', function()
 	}
 });
 
+Route::filter('ownTemplate', function($route)
+{
+	$templateid = $route -> getParameter('templateid');
+	$user = Auth::user();
+	if (!$user -> ownTemplate($templateid)) {
+		Log::info('User don\'t have access to template', array(
+			'templateid' => $templateid,
+			'userid' => $user -> id
+		));
+		return Response::make('Unauthorized', 403);
+	}
+});

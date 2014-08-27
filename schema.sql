@@ -23,6 +23,10 @@ CREATE TABLE groups (
 	REFERENCES users (id)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
+
+	-- so store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
 );
 
 CREATE TABLE group_user (
@@ -30,6 +34,7 @@ CREATE TABLE group_user (
 	REFERENCES groups (id)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE,
+
 	user_id INTEGER
 	REFERENCES users (id)
 	ON UPDATE CASCADE
@@ -49,4 +54,26 @@ CREATE TABLE documents (
 	REFERENCES groups (id)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
+
+	-- so store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
+);
+
+CREATE TABLE templates (
+	id INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
+	name TEXT NOT NULL, 
+ 
+	-- the owner of the template
+	user_id INTEGER 
+	REFERENCES users (id) 
+	ON UPDATE CASCADE 
+	ON DELETE CASCADE,
+
+	-- the content of the template
+	content TEXT,
+
+	-- so store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
 );

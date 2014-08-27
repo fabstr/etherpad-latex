@@ -10,7 +10,13 @@
 	</p>
 	<form role="form">
 		<div class="form-group">
+			<label class="control-label" for="documentname">Document name</label>
 			<input type="text" name="documentname" id="documentname" placeholder="Document name" class="form-control" ng-model="document.name"/>
+		</div>
+		<div class="form-group">
+			<label class="control-label" for="template">Template</label>
+			<select ng-model="document.template" ng-options="t.id as t.name for t in templates"></select>
+			<p>If no template is selected the system standard will be used.</p>
 		</div>
 		<button ng-click="createdocument()" class="btn btn-default">Create document</button>
 		<button ng-click="createdocument(true)" class="btn btn-default">Create document and edit</button>

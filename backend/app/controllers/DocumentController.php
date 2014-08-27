@@ -27,6 +27,9 @@ class DocumentController extends \BaseController {
 	 */
 	public function store()
 	{
+		// begin the transaction
+		DB::beginTransaction();
+
 		// get the document name
 		$input = Input::json();
 		$documentname = $input -> get('documentname');
@@ -40,6 +43,36 @@ class DocumentController extends \BaseController {
 			'documentname' => $documentname,
 			'group_id' => $group -> id
 		));
+
+		// get the template id (if 0 no template should be used)
+		$templateid = $input -> get('templateid');
+		if ($templateid != 0) {
+			// a template should be used
+			if ($user -> ownTemplate($templateid)) {
+				// the user owns this template, set the text
+				// of the document to the content of the 
+				// template
+
+				// get the template
+				$t = Template::find($templateid);
+
+				// get the document's pad id
+				$padid = $doc -> getPadId();
+
+				try {
+					$pm = new PadManager();
+					$pm -> setText($padid, $t -> content);
+				} catch (EtherpadException $e) {
+					DB::rollback();
+					Log::info('Could not create document because of etherpad exception', array(
+						'message' => $e -> getMessage()
+					));
+				}
+			}
+		}
+
+		// all successfull, commit 
+		DB::commit();
 
 		Log::info('Document created', array(
 			'userid' => $user -> id,

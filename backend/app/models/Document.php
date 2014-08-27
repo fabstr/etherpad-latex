@@ -76,4 +76,19 @@ class Document extends Eloquent {
 		$padid = $ethergroupname . '$' . $this -> id;                                                                
 		return $padid;                                                                                              
 	}
+
+	public static function boot()
+	{
+		parent::boot();
+
+		// after the document has been created we also want to create it
+		// in etherpad
+		static::created(function($document) {
+			$pm = new PadManager();
+			$pm -> createGroupPad(
+				$document -> ethergroup(),
+				$document -> id
+			);
+		});
+	}
 }

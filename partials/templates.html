@@ -1,0 +1,60 @@
+<div class="col-md-2">&nbsp;</div>
+<div class="col-md-8">
+	<h2>Your templates</h2>
+	<table class="table table-striped" ng-show="!templatesfail && !notemplates">
+		<thead>
+			<th>Name</th>
+			<th class="right">Actions</th>
+		</thead>
+		<tr ng-repeat="t in templates">
+			<td>
+				<div>
+					{{t.name}}
+				</div>
+				<div class="templateOptions" ng-show="t.showoptions">
+					<form role="form" class="form-horizontal">
+						<div class="form-group">
+							<div class="col-sm-4">
+								<label class="control-label" for="newname">Change template name</label>
+							</div>
+							<div class="col-sm-8">
+								<input type="text" id="newname" class="form-control" ng-model="t.name">
+							</div>
+						</div>
+						<div class="form-group">
+							<div class="col-sm-4">
+								<label class="control-label" for="newcontent">Change template content</label>
+							</div>
+							<div class="col-sm-8">
+								<textarea class="form-control" placeholder="New content here..." ng-model="t.content"></textarea>
+							</div>
+						</div>
+						<button ng-click="updateTemplate(t)" class="btn btn-default">Save the changes</button>
+						<button ng-click="revertTemplate(t)" class="btn btn-default">Cancel</button>
+					</form>
+				</div>
+			</td>
+			<td class="right">
+				<a href="" ng-click="t.showoptions = !t.showoptions" title="View or hide options for {{t.name}}"><span class="glyphicon glyphicon-pencil"></span></a>
+				<a href="" ng-click="removeTemplate(t)" title="Delete {{t.name}}"><span class="glyphicon glyphicon-trash"></span></a>
+			</td>
+		</tr>
+	</table>
+
+
+
+
+	<h2>Create a new template</h2>
+	<form role="form">
+		<div class="form-group">
+			<label for="templatename">Template name</label>
+			<input type="text" id="templatename" ng-model="newtemplate.name" class="form-control" placeholder="Template name">
+		</div>
+		<div class="form-group">
+			<label for="templatecontent">Template content</label>
+			<textarea class="form-control" id="templatecontent" rows="10" placeholder="Enter LaTeX content here..." ng-model="newtemplate.content"></textarea>
+		</div>
+		<button class="btn btn-default" ng-click="createTemplate(newtemplate.name, newtemplate.content)">Create template</button>
+	</form>
+</div>
+<div class="col-md-2">&nbsp;</div>

@@ -59,6 +59,28 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
+		// list the templates of a user
+		Route::get('templates', 'TemplateController@index');
+
+		// create a template
+		Route::post('templates', 'TemplateController@store');
+
+		// the user should own the template to be able to 
+		// show/delete/update a template
+		Route::group(array('before' => 'ownTemplate'), function() 
+		{
+			// show the template
+			Route::get('templates/{templateid}', 'TemplateController@show');
+
+			// delete a template
+			Route::delete('templates/{templateid}', 'TemplateController@destroy');
+
+			// update a template
+			Route::post('templates/{templateid}', 'TemplateController@update');
+		});
+
+
+
 		// list the user's groups
 		Route::get('groups', 'GroupController@index');
 
