@@ -60,6 +60,13 @@ class User extends Eloquent implements UserInterface {
 			-> get();
 	}
 
+	public function snippets()
+	{
+		return DB::table('snippets')
+			-> where('user_id', '=', $this -> id)
+			-> get();
+	}
+
 	public function hasAccessToDocument($documentid)
 	{
 		$documents = $this -> documents();

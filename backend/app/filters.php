@@ -100,3 +100,17 @@ Route::filter('hasAccessToFile', function()
 	}
 });
 
+
+Route::filter('hasAccessToSnippet', function($route)
+{
+	$snippetid = $route -> getParameter('snippetid');
+	$snippet = Snippet::find($snippetid);
+	if (!$snippet -> userHasAccess(Auth::id())) {
+		Log::info('Snippet unauthorized attempt', array(
+			'snippetid' => $snippetid,
+			'userid' => Auth::id()
+		));
+
+		Return Response::make('Unauthorized', 401);
+	}
+});
