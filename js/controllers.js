@@ -304,6 +304,11 @@ angular.module('myApp.controllers', [])
 		}
 	};
 
+	// to refresh the snippets from angular click
+	$scope.refreshSnippets = function() {
+		getSnippets();
+	};
+
 	// hide the log by default
 	$scope.log = {"show": false};
 
