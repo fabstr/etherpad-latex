@@ -23,6 +23,10 @@ CREATE TABLE groups (
 	REFERENCES users (id)
 	ON UPDATE CASCADE
 	ON DELETE CASCADE
+
+	-- to store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
 );
 
 CREATE TABLE group_user (
@@ -48,5 +52,28 @@ CREATE TABLE documents (
 	group_id INTEGER  
 	REFERENCES groups (id)
 	ON UPDATE CASCADE
-	ON DELETE CASCADE
+	ON DELETE CASCADE,
+
+	-- to store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
 );
+
+CREATE TABLE snippets (
+	id INTEGER AUTO_INCREMENT PRIMARY KEY NOT NULL,
+	snippetname TEXT NOT NULL,
+
+	-- the content of the snippet
+	content TEXT,
+
+	-- the owner of the snippet
+	user_id INTEGER 
+	REFERENCES users (id)
+	ON UPDATE CASCADE
+	ON DELETE CASCADE,
+
+	-- to store these laravel values
+	created_at TIMESTAMP,
+	updated_at TIMESTAMP
+);
+
