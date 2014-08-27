@@ -106,16 +106,19 @@ angular.module('myApp.controllers', [])
 		});
 	};
 
-	$scope.removeDocument = function(documentid) {
-		$http({
-			method: 'DELETE',
-			url: 'rest/documents/'+documentid
-		}).success(function() {
-			listDocuments();
-		}).error(function(result) {
-			alert('Could not remove document.');
-		});
-
+	$scope.removeDocument = function(documentid, name) {
+		var str = 'Are you sure you want to delete "' + name + '"?';
+		str += ' This cannot be undone.';
+		if (confirm(str)) {
+			$http({
+				method: 'DELETE',
+				url: 'rest/documents/'+documentid
+			}).success(function() {
+				listDocuments();
+			}).error(function(result) {
+				alert('Could not remove document.');
+			});
+		}
 	}
 
 	// get the user's groups
@@ -341,7 +344,7 @@ angular.module('myApp.controllers', [])
 		});
 	}
 
-	
+
 	$scope.addgroup = function(groupname) {
 		$http.post('rest/groups', {
 			groupname: groupname
