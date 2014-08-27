@@ -82,7 +82,7 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// all file commands (and compiling) require a get/post 
 		// parameter 'documentid' and that the user has access to the 
 		// document in question
-		Route::group(array('before' => 'hasaccess'), function() 
+		Route::group(array('before' => 'hasAccessToFile'), function() 
 		{
 			// to compile the document
 			Route::post('documents/compile', 'DocumentController@compile');

@@ -90,7 +90,7 @@ Route::filter('csrf', function()
 });
 
 
-Route::filter('hasaccess', function() 
+Route::filter('hasAccessToFile', function() 
 {
 	$user = Auth::user();
 	$docid = Input::get('documentid');
