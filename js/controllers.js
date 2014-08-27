@@ -197,6 +197,15 @@ angular.module('myApp.controllers', [])
 		});
 	}
 
+	// get the user's snippets
+	function getSnippets() {
+		$http.get('rest/snippets').success(function(snippets) {
+			$scope.snippets = snippets;
+		}).error(function(result) {
+			console.log(result);
+		});
+	};
+
 	// to upload a file
 	$("#fileuploadbtn").click(function() {
 		var formdata = new FormData($("#fileform")[0]);
@@ -249,6 +258,16 @@ angular.module('myApp.controllers', [])
 			height: 500
 		});
 		$("#fileupload").hide();
+	});
+
+
+	// refresh the snippet list and show the snippet dialog box
+	$("#snippetslink").click(function() {
+		getSnippets();
+		$("#snippetbox").dialog({
+			width: 350,
+			height: 500
+		});
 	});
 
 	// set a link to download the pdf
@@ -309,10 +328,11 @@ angular.module('myApp.controllers', [])
 		$("#editMenu").hide();
 	});
 
-	// when the view is loaded the edit menu should be shown and the filebox
-	// be hidden
-	$("#filebox").hide();
+	// when the view is loaded the edit menu should be shown and the 
+	// filebox and the snippetbox be hidden
 	$("#editMenu").show();
+	$("#filebox").hide();
+	$("#snippetbox").hide();
 
 	// want to compile when the view is loaded
 	compile();

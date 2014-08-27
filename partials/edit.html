@@ -5,6 +5,7 @@
 		<input type="button" id="fileuploadbtn" value="Upload">
 		<progress id="fileupload"></progress>
 	</form>
+
 	<table id="filetable" class="table table-striped">
 		<thead>
 			<th>Filename</th>
@@ -19,6 +20,18 @@
 			</td>
 		</tr>
 
+	</table>
+</div>
+
+<div id="snippetbox" title="Snippets">
+	<p>Click the name of a snippet to view it. Please visit <a href="#/snippets" target="_blank">Snippets</a> to add a snippet.</p>
+	<table class="table table-striped">
+		<tr ng-repeat="s in snippets">
+			<td>
+				<p ng-click="s.show = !s.show">{{s.snippetname}}</p>
+				<pre ng-show="s.show" class="snippetcontent">{{s.content}}</pre>
+			</td>
+		</tr>
 	</table>
 </div>
 

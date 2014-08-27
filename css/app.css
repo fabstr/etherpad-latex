@@ -29,8 +29,6 @@ iframe#etherpad {
 #log pre {
 	width: 100%;
 	height: 100%;
-	/*margin: 0px;*/
-	/*padding: 0px;*/
 }
 
 #log {
@@ -41,4 +39,8 @@ iframe#etherpad {
 
 .documentOptions {
 	margin-top: 20px;
+}
+
+.snippetcontent {
+	white-space: pre-wrap;
 }
