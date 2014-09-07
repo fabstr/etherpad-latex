@@ -71,9 +71,12 @@ angular.module('myApp.controllers', [])
 	$scope.createdocument = function(edit) {
 		if (typeof(edit) === "undefined") edit = false;
 		var data = {'documentname': $scope.document.name};
-		$http.post('rest/documents', data).success(function() {
+		$http.post('rest/documents', data).success(function(reply) {
 			if (edit == true) {
-				$location.path("#edit/"+$scope.document.name);
+				var group = reply.group;
+				var id = reply.id;
+				var path = "/edit/"+group+"/"+id;
+				$location.path(path);
 			} else {
 				$scope.document.created = true;
 				$scope.document.failure = false;

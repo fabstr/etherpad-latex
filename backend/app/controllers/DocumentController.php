@@ -47,6 +47,11 @@ class DocumentController extends \BaseController {
 			'documentname' => $documentname,
 			'documentid' => $doc -> id
 		));
+
+		return Response::json(array(
+			'id' => $doc -> id,
+			'group' => $doc -> ethergroup()
+		));
 	}
 
 	public function compile()
