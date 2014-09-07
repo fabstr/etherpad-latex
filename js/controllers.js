@@ -175,7 +175,7 @@ angular.module('myApp.controllers', [])
 	// compile the current document by calling compile.php with the name
 	// and group id as post paramers
 	function compile() {
-		$http.post("rest/documents/compile", {"documentid": name, "group": group}).success(function(result) {
+		$http.post("rest/documents/"+name+"/compile", {"documentid": name, "group": group}).success(function(result) {
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			$scope.log.show = false;

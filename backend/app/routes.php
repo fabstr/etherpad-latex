@@ -61,7 +61,7 @@ Route::group(array('prefix' => 'latex/rest'), function()
 			Route::post('documents/{documentid}/group', 'DocumentController@changeGroup');
 
 			// to compile the document
-			Route::post('documents/compile', 'DocumentController@compile');
+			Route::post('documents/{documentid}/compile', 'DocumentController@compile');
 		});
 
 
