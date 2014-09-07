@@ -278,6 +278,7 @@ angular.module('myApp.controllers', [])
 
 	// set ta link to view the pdf 
 	$("#viewLink").attr('href', getPdfUrl(name, false));
+	$("#viewLink").attr('target', '_blank');
 
 
 	// to rename a file
