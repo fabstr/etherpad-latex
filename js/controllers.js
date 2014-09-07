@@ -175,11 +175,14 @@ angular.module('myApp.controllers', [])
 	// compile the current document by calling compile.php with the name
 	// and group id as post paramers
 	function compile() {
+		$("html, body").css("cursor", "wait");
 		$http.post("rest/documents/"+name+"/compile", {"documentid": name, "group": group}).success(function(result) {
+			$("html, body").css("cursor", "auto");
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			$scope.log.show = false;
 		}).error(function(result) {
+			$("html, body").css("cursor", "auto");
 			// there is an error, show the log-div and set the 
 			// message
 			$scope.log.show = true;
