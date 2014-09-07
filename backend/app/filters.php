@@ -90,7 +90,7 @@ Route::filter('csrf', function()
 });
 
 
-Route::filter('hasAccessToFile', function() 
+Route::filter('hasAccessToFile', function($route) 
 {
 	$user = Auth::user();
 	$docid = Input::get('documentid');
@@ -114,3 +114,16 @@ Route::filter('hasAccessToSnippet', function($route)
 		Return Response::make('Unauthorized', 401);
 	}
 });
+
+Route::filter('hasAccessToDocument', function($route) 
+{
+	$user = Auth::user();
+	$docid = $route -> getParameter('documentid');
+	if (!$user -> hasAccessToDocument($docid)) {
+		Log::info("user " . $user -> id . " has no access to " . $docid);
+		Return Response::make('Unauthorized', 401);
+	}
+});
+
+
+

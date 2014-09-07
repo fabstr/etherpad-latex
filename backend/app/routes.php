@@ -48,14 +48,21 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// create a document
 		Route::post('documents', 'DocumentController@store');
 
-		// delete a document
-		Route::delete('documents/{documentid}', 'DocumentController@destroy');
+		// to delete or change a document the user should have access
+		Route::group(array('before' => 'hasAccessToDocument'), function()
+		{
+			// delete a document
+			Route::delete('documents/{documentid}', 'DocumentController@destroy');
 
-		// change the name of a document
-		Route::post('documents/{documentid}/name', 'DocumentController@changeName');
+			// change the name of a document
+			Route::post('documents/{documentid}/name', 'DocumentController@changeName');
 
-		// change the group of a document
-		Route::post('documents/{documentid}/group', 'DocumentController@changeGroup');
+			// change the group of a document
+			Route::post('documents/{documentid}/group', 'DocumentController@changeGroup');
+
+			// to compile the document
+			Route::post('documents/compile', 'DocumentController@compile');
+		});
 
 
 
@@ -101,13 +108,11 @@ Route::group(array('prefix' => 'latex/rest'), function()
 
 
 
-		// all file commands (and compiling) require a get/post 
+		// all file commands require a get/post 
 		// parameter 'documentid' and that the user has access to the 
 		// document in question
 		Route::group(array('before' => 'hasAccessToFile'), function() 
 		{
-			// to compile the document
-			Route::post('documents/compile', 'DocumentController@compile');
 
 			// list files of a document
 			Route::get('files', 'FileController@index');

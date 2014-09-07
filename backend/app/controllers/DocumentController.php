@@ -82,14 +82,6 @@ class DocumentController extends \BaseController {
 		$input = Input::json();
 		$newGroupId = $input -> get('groupid');
 
-		// check that the user has access to the document
-		$user = Auth::user();
-		if (!$user -> hasAccessToDocument($documentid)) {
-			return Response::json(array(
-				'failure' => 'No access to document',
-			), 400);
-		}
-
 		// check that the user has access to the group
 		if (!$user -> hasAccessToGroup($newGroupId)) {
 			return Response::json(array(
@@ -134,7 +126,7 @@ class DocumentController extends \BaseController {
 	/**
          * Change the name of the document.
 	 *
-	 * The name can only be changed if the user has access to the document.
+	 * The user should have access to the documen if this function is called.
 	 */
 	public function changeName($documentid)
 	{
@@ -144,13 +136,6 @@ class DocumentController extends \BaseController {
 		// get the new name
 		$input = Input::json();
 		$newname = $input -> get('newname');
-
-		// check if the user has access
-		if (!Auth::user() -> hasAccessToDocument($documentid)) {
-			return Response::json(array(
-				'failure' => 'No access to document'
-			), 401);
-		}
 
 		$doc -> documentname = $newname;
 		$doc -> save();
@@ -170,12 +155,6 @@ class DocumentController extends \BaseController {
 	 */
 	public function destroy($documentid)
 	{
-		if (!Auth::user() -> hasAccessToDocument($documentid)) {
-			return Response::json(array(
-				'failure' => 'No access to document'
-			), 401);
-		}
-
 		// get the document
 		$doc = Document::find($documentid);
 
