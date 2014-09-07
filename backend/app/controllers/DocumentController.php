@@ -41,6 +41,11 @@ class DocumentController extends \BaseController {
 			'group_id' => $group -> id
 		));
 
+		// create the document in etherpad
+		$pm = new PadManager();
+		$pm -> createGroupPad($doc -> ethergroup(), $doc -> id);
+
+		// log the request
 		Log::info('Document created', array(
 			'userid' => $user -> id,
 			'groupid' => $group -> id,
