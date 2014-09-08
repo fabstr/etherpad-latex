@@ -7,16 +7,10 @@ APIKEY.txt. Install a TeX distribution on the server (e.g
 [TexLive](https://www.tug.org/texlive/)).
 
 ### Server-side configuration
-All parameters in `api/config.php` should be set:
-
-- `WORKDIR` is an absolute path to a directory where the latex compiles take 
-place. The user account that runs the php process should have read/write 
-permissions on this directory.
-- `ETHERPADLITEHOST` is the web address where the web server can reach the 
-etherpad-lite process. 
-- `ETHERPADLITEAPIKEY` is the api key defined in etherpad-lite's `APIKEY.txt`
-- `LATEXMKPATH` is the absolute path to the binary `latexmk`
-- `PDFLATEXPATH` is the absolute path to the binary `pdflatex`
+Two files should be edited in the backend folder:
+- `backend/app/config/database.php`
+- `backend/.env.php`
+Read the comments and enter sensible values.
 
 #### Improving security
 To only allow the TeX distribution to see files in `$TEXMFOUTPUT` (or a 
