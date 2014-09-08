@@ -67,6 +67,9 @@ class LatexCompiler {
 	//
 	// if there is no output, read the file $name.log as output
 	private function callLatexMk() {
+		// set the env variable
+		putenv('TEXMFOUTPUT='.$this -> directory);
+
 		// execute the command
 		$cmd = sprintf('%s -pdf -pdflatex=\'%s\' -halt-on-error -output-directory=%s %s/%s 2>&1', 
 			$_ENV['LATEXMK_PATH'], 
