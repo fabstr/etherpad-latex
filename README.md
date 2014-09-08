@@ -10,6 +10,7 @@ APIKEY.txt. Install a TeX distribution on the server (e.g
 Two files should be edited in the backend folder:
 - `backend/app/config/database.php`
 - `backend/.env.php`
+
 Read the comments and enter sensible values.
 
 #### Improving security
