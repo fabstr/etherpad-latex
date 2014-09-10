@@ -92,13 +92,6 @@ class DocumentController extends \BaseController {
 		$input = Input::json();
 		$newGroupId = $input -> get('groupid');
 
-		// check that the user has access to the group
-		if (!$user -> hasAccessToGroup($newGroupId)) {
-			return Response::json(array(
-				'failure' => 'No access to group',
-			), 400);
-		}
-
 		// get the current document
 		$doc = Document::find($documentid);
 
