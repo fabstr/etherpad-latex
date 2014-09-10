@@ -54,10 +54,10 @@ return array(
 
 		'mysql' => array(
 			'driver'    => 'mysql',
-			'host'      => 'mysql.lan.tallr.se',
-			'database'  => 'etherpadlatex',
-			'username'  => 'etherpadlatex',
-			'password'  => 'AxN6G8NHt7SqWZbu',
+			'host'      => $_ENV['DBHOST'],
+			'database'  => $_ENV['DBDATABASE'],
+			'username'  => $_ENV['DBUSERNAME'],
+			'password'  => $_ENV['DBPASSWORD'],
 			'charset'   => 'utf8',
 			'collation' => 'utf8_swedish_ci',
 			'prefix'    => '',
