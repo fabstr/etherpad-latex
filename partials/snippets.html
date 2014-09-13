@@ -23,7 +23,7 @@
 		<tr ng-repeat="s in snippets">
 			<td>
 				<p>
-					{{s.snippetname}}
+					<a href="" ng-click="s.showoptions = !s.showoptions">{{s.snippetname}}</a>
 				</p>
 				<div class="snippetOptions" ng-show="s.showoptions">
 					<form role="form">
