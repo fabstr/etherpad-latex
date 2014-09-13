@@ -48,6 +48,9 @@ class GroupController extends \BaseController {
 			'groupname' => $groupname
 		));
 
+		// add the creator to the group
+		$group -> addUser($userid);
+
 		// log the request
 		Log::info('Group created', array(
 			'userid' => $userid,
