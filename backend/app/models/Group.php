@@ -88,4 +88,23 @@ class Group extends Eloquent {
 			}
 		});
 	}
+
+	/**
+ 	 * Delete all users from the group, including the owner.
+	 */
+	private function deleteAllUsers() 
+	{
+		DB::table('group_user') 
+			-> where('group_id', '=', $this -> id)
+			-> delete();
+	}
+
+	/**
+ 	 * Delete the group and remove the users from the group.
+	 */
+	public function delete() 
+	{
+		$this -> deleteAllUsers();
+		parent::delete();
+	}
 }

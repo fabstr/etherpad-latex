@@ -188,9 +188,9 @@ class GroupController extends \BaseController {
 				'failure' => 'Number of documents not zero'
 			), 400);
 		} 
-		
-		// the user is the owner and the group is empty, delete the 
-		// group
+
+		// the user is the owner and the group is empty, remove all 
+		// users and delete the group
 		else {
 			Log::info('Group ' . $id . ' deleted');
 			$group -> delete();
