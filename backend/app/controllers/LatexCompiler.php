@@ -35,6 +35,9 @@ class LatexCompiler {
 		// ensure the directory exists
 		$this -> ensureDirectory();
 
+		// clean
+		$this -> clean();
+
 		// get the text and save it 
 		$this -> writeTextToFile();
 
@@ -48,6 +51,21 @@ class LatexCompiler {
 		if (!is_dir($this -> directory)) {
 			if (!mkdir($this -> directory)) {
 				throw new LatexException('Could not create directory ' . $this -> directory);
+			}
+		}
+	}
+
+	// delete all  .aux .fdb_latexmk .fls .log .out .pdf .tex .toc files
+	private function clean() {
+		$types = ['.aux', '.fdb_latexmk', '.fls', '.log', '.out', '.pdf', '.tex', '.toc'];
+		$s = '';
+		foreach (scandir($this -> directory) as $file) {
+			if ($file === '.' || $file === '..') continue;
+			foreach ($types as $t) {
+				$extension = substr($file, 0-strlen($t));
+				if (in_array($extension, $types) && file_exists($this -> directory . '/' . $file)) {
+					unlink($this -> directory . '/' . basename($file));
+				}
 			}
 		}
 	}
