@@ -183,6 +183,7 @@ angular.module('myApp.controllers', [])
 	// compile the current document by calling compile.php with the name
 	// and group id as post paramers
 	function compile() {
+		$("#compileLink").blur();
 		$("html, body").css("cursor", "wait");
 		$("#loading").show();
 		$http.post("rest/documents/"+name+"/compile", {"documentid": name, "group": group}).success(function(result) {
@@ -272,6 +273,7 @@ angular.module('myApp.controllers', [])
 
 	// refresh the file list and show the dialog box
 	$("#managefilesLink").click(function() {
+		$("#managefilesLink").blur();
 		refreshFiletable();
 		$("#filebox").dialog({
 			width: 350,
@@ -283,6 +285,7 @@ angular.module('myApp.controllers', [])
 
 	// refresh the snippet list and show the snippet dialog box
 	$("#snippetslink").click(function() {
+		$("#snippetsLink").blur();
 		getSnippets();
 		$("#snippetbox").dialog({
 			width: 350,
@@ -297,6 +300,9 @@ angular.module('myApp.controllers', [])
 	// set ta link to view the pdf 
 	$("#viewLink").attr('href', getPdfUrl(name, false));
 	$("#viewLink").attr('target', '_blank');
+	$("#viewLink").click(function() {
+		$("#viewLink").blur();
+	});
 
 
 	// to rename a file
