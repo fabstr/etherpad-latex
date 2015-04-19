@@ -70,3 +70,7 @@ iframe#etherpad {
 #loading {
 	margin-right: 10px;
 }
+
+.noselect:focus {
+	outline: 0;
+}
