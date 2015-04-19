@@ -40,6 +40,9 @@ Route::group(array('prefix' => 'latex/rest'), function()
 		// download a pdf
 		Route::get('pdf/download/{id}.pdf', 'PdfController@download');
 
+		// download the .tex-file
+		Route::get('tex/download/{id}.tex', 'DocumentController@downloadTex');
+
 
 
 		// list the documents
