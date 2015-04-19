@@ -68,7 +68,16 @@ class DocumentController extends \BaseController {
 
 		try {
 			$lc = new LatexCompiler($name);
-			$lc -> compile();
+			$res = $lc -> compile();
+
+			// if res is false the document is locked, 
+			// return a 409 conflict
+			if ($res === false) {
+				// the document is locked
+				return Response::json(array(
+					'message' => 'The document is already compiling (the document\'s compile lockfile is present or could not be created).'
+				), 409);
+			}
 		} catch (LatexException $e) {
 			return Response::json(array(
 				'message' => $e -> getMessage()

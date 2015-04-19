@@ -11,6 +11,7 @@ class LatexCompiler {
 	private $padid;
 	private $name;
 	private $directory;
+	private $lockfile;
 
 	public function __construct($padid) {
 		// check that padname is one or more digits
@@ -24,6 +25,7 @@ class LatexCompiler {
 		$this -> padid = $document -> ethergroup() . '$' . $padid;
 		$this -> name = $document -> id;
 		$this -> directory = $document -> absdir();
+		$this -> lockfile = $this -> directory . '/' . $this -> name . '.lockfile';
 		$this -> pm = new PadManager();
 	}
 
@@ -31,18 +33,51 @@ class LatexCompiler {
 	// - ensure the directory exists
 	// - get the text and save it 
 	// - call latexmk
+	//
+	// If the document is locket (ie the lockfile is present), do nothing 
+	// and return false. 
 	public function compile() {
 		// ensure the directory exists
 		$this -> ensureDirectory();
 
-		// clean
-		$this -> clean();
+		// create the lockfile (or return)
+		if (!$this -> lock()) {
+			return false;
+		}
 
-		// get the text and save it 
-		$this -> writeTextToFile();
+		try {
+			// clean
+			$this -> clean();
 
-		// call latexmk
-		$this -> callLatexMk();
+			// get the text and save it 
+			$this -> writeTextToFile();
+
+			// call latexmk
+			$this -> callLatexMk();
+		} catch (Exception $e) {
+			throw $e;
+		} finally {
+			$this -> unlock();
+		}
+
+		return true;
+	}
+
+	// check if the lockfile exists, if it does, return false.
+	// else, create the lockfile and return true
+	private function lock() {
+		if (file_exists($this -> lockfile)) {
+			return false;
+		}
+
+		return file_put_contents($this -> lockfile, 'I am locked!') !== false;
+	}
+
+	// remove the lockfile (if it exists)
+	private function unlock() {
+		if (file_exists($this -> lockfile)) {
+			unlink($this -> lockfile);
+		}
 	}
 
 	// check if $this->directory is a directory

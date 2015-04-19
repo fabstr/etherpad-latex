@@ -18,6 +18,7 @@ class FileController  extends \BaseController {
 			$doc -> id . '.out',
 			$doc -> id . '.pdf',
 			$doc -> id . '.tex',
+			$doc -> id . '.lockfile',
 			$doc -> id . '.toc');
 
 		// remove all files in notlisting
