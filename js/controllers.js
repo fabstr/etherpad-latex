@@ -184,7 +184,13 @@ angular.module('myApp.controllers', [])
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			$scope.log.show = false;
-		}).error(function(result) {
+		}).error(function(result, statuscode) {
+			if (statuscode == 409) {
+				// the document is locked
+				alert('The document is already compiling, please try again in a while.');
+				return;
+			}
+
 			$("html, body").css("cursor", "auto");
 			// there is an error, show the log-div and set the 
 			// message
