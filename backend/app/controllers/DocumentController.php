@@ -239,9 +239,9 @@ class DocumentController extends \BaseController {
 
 		$size = strlen(utf8_decode($tex));
 
-		header('Content-type: application/octet-stream');
+		header('Content-type: application/x-tex');
 		header('Content-length: ' . $size);
-		header('Content-disposition: filename="'.$filename.'.tex"');
+		header('Content-disposition: attachment; filename="'.$filename.'.tex"');
 		echo $tex;
 	}
 }
