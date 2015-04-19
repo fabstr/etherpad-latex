@@ -171,6 +171,11 @@ angular.module('myApp.controllers', [])
 		return url;
 	}
 
+	function getTexUrl(name) {
+		var url = HOSTURL + "/rest/tex/download/" + name + ".tex";
+		return url;
+	}
+
 	function getPdfView(pdfurl) {
 		return "pdfjs/web/viewer.html?file="+pdfurl;
 	}
@@ -288,8 +293,9 @@ angular.module('myApp.controllers', [])
 		});
 	});
 
-	// set a link to download the pdf
+	// set a link to download the pdf and tex
 	$("#downloadLink").attr('href', getPdfUrl(name, true));
+	$("#downloadTexLink").attr('href', getTexUrl(name));
 
 	// set ta link to view the pdf 
 	$("#viewLink").attr('href', getPdfUrl(name, false));
