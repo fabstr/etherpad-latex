@@ -172,8 +172,7 @@ angular.module('myApp.controllers', [])
 	}
 
 	function getTexUrl(name) {
-		Route::get('tex/download/{id}/{name}.tex', 'DocumentController@downloadTex');
-		var url = HOSTURL + "/rest/tex/download/" + name;
+		var url = HOSTURL + "/rest/tex/download/" + name + ".tex";
 		return url;
 	}
 
