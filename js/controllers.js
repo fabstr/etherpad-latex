@@ -179,11 +179,13 @@ angular.module('myApp.controllers', [])
 	// and group id as post paramers
 	function compile() {
 		$("html, body").css("cursor", "wait");
+		$("#loading").show();
 		$http.post("rest/documents/"+name+"/compile", {"documentid": name, "group": group}).success(function(result) {
 			$("html, body").css("cursor", "auto");
 			// there was no error, refresh the pdf iframe
 			$("#pdfview").attr("src", getPdfView(getPdfUrl(name)));
 			$scope.log.show = false;
+			$("#loading").hide();
 		}).error(function(result, statuscode) {
 			if (statuscode == 409) {
 				// the document is locked
@@ -196,6 +198,7 @@ angular.module('myApp.controllers', [])
 			// message
 			$scope.log.show = true;
 			$scope.log.msg = result.message.replace(/\\n/g, '\n');
+			$("#loading").hide();
 		});
 	};
 
