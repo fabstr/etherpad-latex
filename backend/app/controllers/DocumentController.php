@@ -217,4 +217,31 @@ class DocumentController extends \BaseController {
 			'user' => Auth::id()
 		));
 	}
+
+	/**
+ 	 * Download the .tex-file. 
+	 * First check the user has access to the document. If not return 401.
+	 * Else, output the .tex-file.
+	 */
+	public function downloadTex($id) {
+		$user = Auth::user();
+		if (!$user -> hasAccessToDocument($id)) {
+			return Response::json(array(
+				'failure' => 'You don\'t have access to this document.'
+			), 403);
+		}
+
+		$document = Document::find($id);
+		$filename = $document -> documentname;
+		$padid = $document -> getPadId();
+		$pm = new PadManager();
+		$tex = $pm -> getText($padid);
+
+		$size = strlen(utf8_decode($tex));
+
+		header('Content-type: application/x-tex');
+		header('Content-length: ' . $size);
+		header('Content-disposition: filename="'.$filename.'.tex"');
+		echo $tex;
+	}
 }
