@@ -262,11 +262,13 @@ angular.module('myApp.controllers', [])
 
 	// compile the document
 	$("#compileLink").click(function() {
+		$("#compileLink").blur();
 		compile();
 	});
 
 	// refresh the file list and show the dialog box
 	$("#managefilesLink").click(function() {
+		$("#managefilesLink").blur();
 		refreshFiletable();
 		$("#filebox").dialog({
 			width: 350,
@@ -278,6 +280,7 @@ angular.module('myApp.controllers', [])
 
 	// refresh the snippet list and show the snippet dialog box
 	$("#snippetslink").click(function() {
+		$("#snippetslink").blur();
 		getSnippets();
 		$("#snippetbox").dialog({
 			width: 350,
@@ -291,6 +294,9 @@ angular.module('myApp.controllers', [])
 	// set ta link to view the pdf 
 	$("#viewLink").attr('href', getPdfUrl(name, false));
 	$("#viewLink").attr('target', '_blank');
+	$("#viewLink").click(function() {
+		$("#viewLink").blur();
+	});
 
 
 	// to rename a file
