@@ -92,7 +92,7 @@ class LatexCompiler {
 
 	// delete all  .aux .fdb_latexmk .fls .log .out .pdf .tex .toc files
 	private function clean() {
-		$types = ['.aux', '.fdb_latexmk', '.fls', '.log', '.out', '.pdf', '.tex', '.toc'];
+		$types = ['.aux', '.fdb_latexmk', '.fls', '.log', '.out', '.tex', '.toc'];
 		$s = '';
 		foreach (scandir($this -> directory) as $file) {
 			if ($file === '.' || $file === '..') continue;
